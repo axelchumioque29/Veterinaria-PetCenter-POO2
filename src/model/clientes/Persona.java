@@ -1,6 +1,6 @@
 package model.clientes;
 
-public class Persona {
+public abstract class Persona {
     private String dni;
     private String nombre;
     private String telefono;
@@ -34,4 +34,5 @@ public class Persona {
     public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
+
 }
