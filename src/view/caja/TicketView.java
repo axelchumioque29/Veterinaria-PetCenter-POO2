@@ -6,6 +6,6 @@ public class TicketView {
         System.out.println("Tx: " + idTransaccion);
         System.out.println("Método: " + metodo);
         System.out.println("Monto Pagado: S/ " + montoPagado);
-        System.out.println("¡Gracias por su preferencia!");
+
     }
 }
