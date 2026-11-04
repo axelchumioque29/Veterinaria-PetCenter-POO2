@@ -1,12 +1,13 @@
 package model.clientes;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
 public class RepositorioGenerico<T>{
     private List<T> elementos;
 
-    public RepositorioGenerico(List<T> elementos) {
-        this.elementos = elementos;
+    public RepositorioGenerico() {
+        this.elementos = new ArrayList<>();
     }
 
     public void agregar(T elemento){
