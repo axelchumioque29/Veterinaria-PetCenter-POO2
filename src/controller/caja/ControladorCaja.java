@@ -8,7 +8,7 @@ public class ControladorCaja {
 
     public void iniciarTurno(Cajero cajero, double saldoInicial) {
         this.cajaActual = new CajaDiaria(cajero);
-        System.out.println("Turno iniciado con saldo inicial: S/ " + saldoInicial);
+        System.out.println("Turno con saldo inicial: S/ " + saldoInicial);
     }
 
     public CajaDiaria getCajaActual() { return cajaActual; }
