@@ -7,6 +7,6 @@ public class AuditoriaFinanciera {
     public static void registrarAccion(String idCajero, String accion) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String fechaHora = LocalDateTime.now().format(formatter);
-        System.out.println("[AUDITORÍA] " + fechaHora + " | Cajero: " + idCajero + " | Acción: " + accion);
+        System.out.println("auditoria " + fechaHora + " | Cajero: " + idCajero + " | Accion: " + accion);
     }
 }
