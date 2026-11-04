@@ -10,7 +10,7 @@ public class Cita {
     private EstadoCita estado;
     private String motivo;
 
-    public Cita(String idCita, Cliente cliente, Mascota mascota, LocalDateTime fechaHora, EstadoCita estado, String motivo) {
+    public Cita(String idCita, Cliente cliente, Mascota mascota, LocalDateTime fechaHora, String motivo) {
         this.idCita = idCita;
         this.cliente = cliente;
         this.mascota = mascota;
