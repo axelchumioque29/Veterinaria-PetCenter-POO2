@@ -1,14 +1,15 @@
 package controller.caja;
 
 import model.caja.*;
-import model.clientes.Cliente;
 import model.clientes.Cita;
+import model.clientes.Cliente;
 import model.farmacia.ProductoFarmacia;
 import java.util.List;
 
 public class ControladorFacturacion {
 
     public void procesarCobroCompleto(Cita cita, List<ProductoFarmacia> medicamentos, double precioConsulta, String tipoPago) {
+
 
         Cliente cliente = cita.getCliente();
         DetalleComprobante detalle = new DetalleComprobante();
@@ -18,23 +19,24 @@ public class ControladorFacturacion {
         detalle.agregarItem(new ItemVenta(conceptoConsulta, 1));
 
 
-        if (medicamentos != null) {
+        if (medicamentos != null && !medicamentos.isEmpty()) {
             for (ProductoFarmacia producto : medicamentos) {
-
                 ConceptoCobro conceptoMed = new ConceptoCobro(producto);
                 detalle.agregarItem(new ItemVenta(conceptoMed, 1));
             }
         }
 
 
-        Boleta boleta = new Boleta("B001", "00004", detalle, Moneda.PEN, cliente);
+        Boleta boleta = new Boleta("B001", "00005", detalle, Moneda.PEN, cliente);
         MetodoPago pago = MetodoPagoFactory.crearMetodoPago(tipoPago);
 
         if (pago.procesarPago(boleta.getTotal())) {
             Transaccion transaccion = new Transaccion("TX-" + System.currentTimeMillis(), boleta, pago);
             System.out.println("Venta procesada con éxito.");
             System.out.println(boleta.getDatosCliente());
-            System.out.println("Total a cobrar: S/ " + transaccion.getTotal());
+            System.out.println("Total cobrado: S/ " + transaccion.getTotal());
+        } else {
+            System.err.println("El pago fue rechazado.");
         }
     }
 }
