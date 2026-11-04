@@ -32,7 +32,7 @@ public class ControladorFacturacion {
 
         if (pago.procesarPago(boleta.getTotal())) {
             Transaccion transaccion = new Transaccion("TX-" + System.currentTimeMillis(), boleta, pago);
-            System.out.println("Venta procesada con éxito.");
+            System.out.println("Venta  con exito.");
             System.out.println(boleta.getDatosCliente());
             System.out.println("Total cobrado: S/ " + transaccion.getTotal());
         } else {
