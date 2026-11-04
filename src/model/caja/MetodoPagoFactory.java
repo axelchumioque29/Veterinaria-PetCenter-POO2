@@ -6,7 +6,7 @@ public class MetodoPagoFactory {
             case "TARJETA": return new PagoTarjeta();
             case "YAPE": return new PagoYape();
             case "PLIN": return new PagoPlin();
-            default: throw new IllegalArgumentException("Método de pago no soportado: " + tipo);
+            default: throw new IllegalArgumentException("Metodo de pago no soportado: " + tipo);
         }
     }
 }
