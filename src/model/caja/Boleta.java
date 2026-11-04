@@ -1,6 +1,6 @@
-package model.caja; // Tu carpeta
+package model.caja;
 
-import model.clientes.Cliente; // La carpeta de Axel
+import model.clientes.Cliente;
 
 public class Boleta extends Comprobante {
     private String dniCliente;
@@ -12,7 +12,7 @@ public class Boleta extends Comprobante {
         this.detalle = detalle;
         this.moneda = moneda;
 
-        // Extrae los datos usando los métodos que Axel heredó de Persona
+
         this.dniCliente = cliente.getDni();
         this.nombreCliente = cliente.getNombre();
     }
