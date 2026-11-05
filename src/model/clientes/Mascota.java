@@ -54,4 +54,8 @@ public abstract class Mascota {
     public void setPeso(double peso) {
         this.peso = peso;
     }
+
+    public String getCodigo() {
+        return idMascota;
+    }
 }

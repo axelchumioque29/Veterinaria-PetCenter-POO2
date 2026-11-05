@@ -1,5 +1,6 @@
 package model.clientes;
 
+import java.util.ArrayList; // <--- Importante
 import java.util.List;
 
 public class Cliente extends Persona {
@@ -9,7 +10,7 @@ public class Cliente extends Persona {
     public Cliente(String dni, String nombre, String telefono, String direccion) {
         super(dni, nombre, telefono);
         this.direccion = direccion;
-        this.mascotas = mascotas;
+        this.mascotas = new ArrayList<>(); // <--- Inicializamos la lista aquí correctamente
     }
 
     public String getDireccion() {
@@ -27,5 +28,4 @@ public class Cliente extends Persona {
     public void agregarMascota (Mascota mascota){
         this.mascotas.add(mascota);
     }
-
 }
