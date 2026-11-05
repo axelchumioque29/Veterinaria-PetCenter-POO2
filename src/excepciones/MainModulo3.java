@@ -8,7 +8,7 @@ import java.util.Scanner;
 public class MainModulo3 {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("=== INICIANDO SISTEMA DE FACTURACION ===");
+        System.out.println("===  SISTEMA DE FACTURACION ===");
 
         System.out.print("Ingrese ID del Cajero: ");
         String idCajero = scanner.nextLine();
@@ -23,7 +23,6 @@ public class MainModulo3 {
         ControladorCaja controladorCaja = new ControladorCaja();
         controladorCaja.iniciarTurno(cajeroTurno, saldoInicial);
 
-        // Registra el movimiento en tu auditoría
         AuditoriaFinanciera.registrarAccion(cajeroTurno.getId(), "Apertura de caja con S/ " + saldoInicial);
 
         MenuCajaView menu = new MenuCajaView();
@@ -43,7 +42,7 @@ public class MainModulo3 {
                     System.out.print("Ingrese método de pago (EFECTIVO, TARJETA, YAPE, PLIN): ");
                     String tipoPago = scanner.nextLine();
 
-                    // --- SIMULACIÓN DE COMPROBANTE ---
+
                     model.caja.DetalleComprobante detalle = new model.caja.DetalleComprobante();
                     model.caja.ConceptoCobro concepto = new model.caja.ConceptoCobro("SRV-TEST", "Venta de prueba", 150.0);
                     detalle.agregarItem(new model.caja.ItemVenta(concepto, 1));
@@ -51,7 +50,7 @@ public class MainModulo3 {
                     model.caja.Comprobante boletaTest = new model.caja.Boleta("B001", "000001", detalle, model.caja.Moneda.PEN, null);
                     // ----------------------------------------
 
-                    // Llamamos al controlador para procesar la venta
+
                     controladorCaja.registrarCobro(idTx, boletaTest, tipoPago);
                     break;
 
