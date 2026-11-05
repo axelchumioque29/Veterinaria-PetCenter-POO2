@@ -35,4 +35,8 @@ public class Cita {
     public LocalDateTime getFechaHora() { return fechaHora; }
     public EstadoCita getEstado() { return estado; }
     public void setEstado(EstadoCita estado) { this.estado = estado; }
+
+    public IEstrategiaAtencion getEstrategiaAtencion() {
+        return estrategiaAtencion;
+    }
 }
