@@ -12,14 +12,16 @@ public class ControladorCita {
         this.repositorioCitas = new RepositorioGenerico<>();
     }
 
-    // Agendar una nueva cita validando que no existan cruces de horario
-    public void agendarCita(String idCita, Cliente cliente, Mascota mascota, LocalDateTime fechaHora, String motivo) throws CitaCruzadaException {
-        Cita nuevaCita = new Cita(idCita, cliente, mascota, fechaHora, motivo);
-
-        // Validamos usando la lista actual y la regla de negocio
+    // Agendar usando parámetros individuales (con validación de cruce)
+    public void agendarCita(String idCita, Cliente cliente, Mascota mascota, LocalDateTime fechaHora, IEstrategiaAtencion estrategiaAtencion) throws CitaCruzadaException {
+        Cita nuevaCita = new Cita(idCita, cliente, mascota, fechaHora, estrategiaAtencion);
         ValidadorCita.validarCruceHorario(repositorioCitas.listarTodos(), nuevaCita);
+        repositorioCitas.agregar(nuevaCita);
+    }
 
-        // Si pasa la validación, se agrega al repositorio
+    // NUEVO: Agendar recibiendo el objeto Cita completo (para la Fachada, validando también el cruce)
+    public void agendarCita(Cita nuevaCita) throws CitaCruzadaException {
+        ValidadorCita.validarCruceHorario(repositorioCitas.listarTodos(), nuevaCita);
         repositorioCitas.agregar(nuevaCita);
     }
 
@@ -30,8 +32,13 @@ public class ControladorCita {
                 .collect(Collectors.toList());
     }
 
-    // Listar todas las citas
+    // Listar todas las citas (Método estándar)
     public List<Cita> obtenerTodasLasCitas() {
+        return repositorioCitas.listarTodos();
+    }
+
+    // Alias para que coincida exactamente con lo que pide la Fachada
+    public List<Cita> listarCitas() {
         return repositorioCitas.listarTodos();
     }
 }

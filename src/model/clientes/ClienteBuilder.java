@@ -36,4 +36,9 @@ public class ClienteBuilder implements IClienteBuilder {
         // Aquí podríamos validar reglas antes de retornar el objeto
         return new Cliente(dni, nombre, telefono, direccion);
     }
+
+    @Override
+    public IClienteBuilder setApellido(String apellido) {
+        return null;
+    }
 }

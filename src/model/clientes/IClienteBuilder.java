@@ -7,4 +7,6 @@ public interface IClienteBuilder {
     IClienteBuilder setTelefono(String telefono);
     IClienteBuilder setDireccion(String direccion);
     Cliente build();
+
+    IClienteBuilder setApellido(String apellido);
 }
