@@ -7,8 +7,8 @@ import java.util.List;
 public class ControladorCliente {
     private RepositorioGenerico<Cliente> repositorioClientes;
 
-    public ControladorCliente() {
-        this.repositorioClientes = new RepositorioGenerico<>();
+    public ControladorCliente(RepositorioGenerico<Cliente> repoClientes) {
+        this.repositorioClientes = repoClientes;
     }
 
     // Registrar recibiendo parámetros separados (el que ya tenías)
