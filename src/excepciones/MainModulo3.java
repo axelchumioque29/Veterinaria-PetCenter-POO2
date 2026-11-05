@@ -3,12 +3,13 @@ package excepciones;
 import model.caja.Cajero;
 import controller.caja.ControladorCaja;
 import view.caja.MenuCajaView;
+import model.clientes.Cliente; // Importamos la clase de tu compañero
 import java.util.Scanner;
 
 public class MainModulo3 {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("===  SISTEMA DE FACTURACION ===");
+        System.out.println("=== INICIANDO SISTEMA DE FACTURACION ===");
 
         System.out.print("Ingrese ID del Cajero: ");
         String idCajero = scanner.nextLine();
@@ -42,15 +43,19 @@ public class MainModulo3 {
                     System.out.print("Ingrese método de pago (EFECTIVO, TARJETA, YAPE, PLIN): ");
                     String tipoPago = scanner.nextLine();
 
+                    // --- INTEGRACIÓN CON EL MÓDULO DE CLIENTES ---
+                    // Simulamos que el módulo 1 nos envía este cliente para cobrarle
+                    Cliente clientePrueba = new Cliente("76543210", "Juan Perez", "987654321", "Av. San Ignacio 123");
 
                     model.caja.DetalleComprobante detalle = new model.caja.DetalleComprobante();
-                    model.caja.ConceptoCobro concepto = new model.caja.ConceptoCobro("SRV-TEST", "Venta de prueba", 150.0);
+                    model.caja.ConceptoCobro concepto = new model.caja.ConceptoCobro("SRV-TEST", "Consulta Médica General", 150.0);
                     detalle.agregarItem(new model.caja.ItemVenta(concepto, 1));
 
-                    model.caja.Comprobante boletaTest = new model.caja.Boleta("B001", "000001", detalle, model.caja.Moneda.PEN, null);
-                    // ----------------------------------------
+                    // Le enviamos clientePrueba a la boleta
+                    model.caja.Comprobante boletaTest = new model.caja.Boleta("B001", "000001", detalle, model.caja.Moneda.PEN, clientePrueba);
+                    // ---------------------------------------------
 
-
+                    // Llamamos al controlador para procesar la venta
                     controladorCaja.registrarCobro(idTx, boletaTest, tipoPago);
                     break;
 
@@ -62,7 +67,6 @@ public class MainModulo3 {
 
                 case 3:
                     System.out.println("Generando reportes de ingresos...");
-                    // Aquí luego puedes conectar tu generador de reportes
                     break;
 
                 case 4:
