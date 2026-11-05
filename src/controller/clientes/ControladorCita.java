@@ -12,11 +12,12 @@ public class ControladorCita {
         this.repositorioCitas = new RepositorioGenerico<>();
     }
 
-    // Agendar una nueva cita validando que no existan cruces de horario
-    public void agendarCita(String idCita, Cliente cliente, Mascota mascota, LocalDateTime fechaHora, String motivo) throws CitaCruzadaException {
-        Cita nuevaCita = new Cita(idCita, cliente, mascota, fechaHora, motivo);
+    // Agendar una nueva cita recibiendo la estrategia de atención (Strategy)
+    public void agendarCita(String idCita, Cliente cliente, Mascota mascota, LocalDateTime fechaHora, IEstrategiaAtencion estrategiaAtencion) throws CitaCruzadaException {
+        // Pasamos la estrategia al constructor actualizado de Cita
+        Cita nuevaCita = new Cita(idCita, cliente, mascota, fechaHora, estrategiaAtencion);
 
-        // Validamos usando la lista actual y la regla de negocio
+        // Validamos usando el validador de cruce de horarios
         ValidadorCita.validarCruceHorario(repositorioCitas.listarTodos(), nuevaCita);
 
         // Si pasa la validación, se agrega al repositorio

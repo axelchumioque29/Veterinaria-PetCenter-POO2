@@ -7,63 +7,32 @@ public class Cita {
     private Cliente cliente;
     private Mascota mascota;
     private LocalDateTime fechaHora;
+    private IEstrategiaAtencion estrategiaAtencion; // Patrón Strategy integrado
     private EstadoCita estado;
-    private String motivo;
 
-    public Cita(String idCita, Cliente cliente, Mascota mascota, LocalDateTime fechaHora, String motivo) {
+    public Cita(String idCita, Cliente cliente, Mascota mascota, LocalDateTime fechaHora, IEstrategiaAtencion estrategiaAtencion) {
         this.idCita = idCita;
         this.cliente = cliente;
         this.mascota = mascota;
         this.fechaHora = fechaHora;
-        this.motivo = motivo;
-        this.estado = EstadoCita.PENDIENTE; //Por defecto debe nacer en estado pendiente
+        this.estrategiaAtencion = estrategiaAtencion;
+        this.estado = EstadoCita.PENDIENTE;
     }
 
-    public String getIdCita() {
-        return idCita;
+    public LocalDateTime getFechaHoraFin() {
+        int minutos = estrategiaAtencion.calcularMinutosEstimados();
+        return fechaHora.plusMinutes(minutos);
     }
 
-    public void setIdCita(String idCita) {
-        this.idCita = idCita;
+    public String getPrioridad() {
+        return estrategiaAtencion.obtenerPrioridad();
     }
 
-    public Cliente getCliente() {
-        return cliente;
-    }
-
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
-    }
-
-    public Mascota getMascota() {
-        return mascota;
-    }
-
-    public void setMascota(Mascota mascota) {
-        this.mascota = mascota;
-    }
-
-    public LocalDateTime getFechaHora() {
-        return fechaHora;
-    }
-
-    public void setFechaHora(LocalDateTime fechaHora) {
-        this.fechaHora = fechaHora;
-    }
-
-    public EstadoCita getEstado() {
-        return estado;
-    }
-
-    public void setEstado(EstadoCita estado) {
-        this.estado = estado;
-    }
-
-    public String getMotivo() {
-        return motivo;
-    }
-
-    public void setMotivo(String motivo) {
-        this.motivo = motivo;
-    }
+    // Getters y Setters tradicionales
+    public String getIdCita() { return idCita; }
+    public Cliente getCliente() { return cliente; }
+    public Mascota getMascota() { return mascota; }
+    public LocalDateTime getFechaHora() { return fechaHora; }
+    public EstadoCita getEstado() { return estado; }
+    public void setEstado(EstadoCita estado) { this.estado = estado; }
 }
