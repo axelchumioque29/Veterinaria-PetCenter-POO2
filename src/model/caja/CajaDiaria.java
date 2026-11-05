@@ -3,6 +3,7 @@ package model.caja;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class CajaDiaria {
     private Cajero cajero;
     private double saldoInicial;
@@ -10,7 +11,6 @@ public class CajaDiaria {
     private EstadoCaja estado;
     private List<Transaccion> transacciones;
 
-    // Ahora sí acepta 2 argumentos: Cajero y saldoInicial
     public CajaDiaria(Cajero cajero, double saldoInicial) {
         this.cajero = cajero;
         this.saldoInicial = saldoInicial;
@@ -24,11 +24,7 @@ public class CajaDiaria {
         saldoFinal += t.getTotal();
     }
 
-    public void cerrarCaja() {
-        this.estado = EstadoCaja.CERRADA;
-    }
-
-    // Aquí están los métodos que IntelliJ no encontraba
+    public void cerrarCaja() { this.estado = EstadoCaja.CERRADA; }
     public double getSaldoInicial() { return saldoInicial; }
     public double getSaldoFinal() { return saldoFinal; }
     public EstadoCaja getEstado() { return estado; }

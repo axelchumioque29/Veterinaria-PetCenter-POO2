@@ -7,9 +7,7 @@ import java.util.ArrayList;
 
 public class AdministradorHistoriales {
 
-    private final RepositorioGenerico<HistoriaClinica> repositorio =
-            new RepositorioGenerico<>(new ArrayList<>());
-
+    private final RepositorioGenerico<HistoriaClinica> repositorio = new RepositorioGenerico<>();
     public synchronized HistoriaClinica obtener(Mascota mascota) {
         if (mascota == null) throw new IllegalArgumentException("Seleccione una mascota.");
         String id = ProductoFarmacia.validarTexto(mascota.getIdMascota());

@@ -3,12 +3,13 @@ package excepciones;
 import model.caja.Cajero;
 import controller.caja.ControladorCaja;
 import view.caja.MenuCajaView;
+import excepciones.AuditoriaFinanciera; // Asumiendo que guardaste AuditoriaFinanciera aquí
 import java.util.Scanner;
 
 public class MainModulo3 {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("=== iniciando sistema de facturacion ===");
+        System.out.println("=== INICIANDO SISTEMA DE FACTURACION ===");
 
         System.out.print("Ingrese ID del Cajero: ");
         String idCajero = scanner.nextLine();
@@ -23,7 +24,6 @@ public class MainModulo3 {
         ControladorCaja controladorCaja = new ControladorCaja();
         controladorCaja.iniciarTurno(cajeroTurno, saldoInicial);
 
-        // Registramos en la auditoría la apertura de caja
         AuditoriaFinanciera.registrarAccion(cajeroTurno.getId(), "Apertura de caja con S/ " + saldoInicial);
 
         MenuCajaView menu = new MenuCajaView();
@@ -34,8 +34,7 @@ public class MainModulo3 {
 
             switch (opcion) {
                 case 1:
-                    System.out.println("Preparando entorno para nuevo cobr");
-
+                    System.out.println("Preparando entorno para nuevo cobro...");
                     break;
                 case 2:
                     System.out.println("Cerrando caja...");
@@ -43,13 +42,13 @@ public class MainModulo3 {
                     AuditoriaFinanciera.registrarAccion(cajeroTurno.getId(), "Cierre de caja ejecutado. Saldo final: S/ " + controladorCaja.getCajaActual().getSaldoFinal());
                     break;
                 case 3:
-                    System.out.println("Generando reportes de ingresos");
+                    System.out.println("Generando reportes de ingresos...");
                     break;
                 case 4:
-                    System.out.println("Saliendo del Modulo de Caja");
+                    System.out.println("Saliendo del Modulo de Caja...");
                     break;
                 default:
-                    System.out.println("Opcion inválida.");
+                    System.out.println("Opcion invalida.");
             }
         }
         scanner.close();
