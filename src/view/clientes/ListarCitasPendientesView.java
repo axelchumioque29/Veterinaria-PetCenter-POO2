@@ -11,7 +11,7 @@ public class ListarCitasPendientesView {
     }
 
     public void ejecutar() {
-        System.out.println("\n--- CITAS PENDIENTES (Stream API) ---");
+        System.out.println("\nCITAS PENDIENTES (Stream API)");
         var citas = facade.obtenerCitasPendientes();
         if (citas.isEmpty()) {
             System.out.println("No hay citas pendientes.");
