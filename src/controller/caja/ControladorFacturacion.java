@@ -16,7 +16,7 @@ public class ControladorFacturacion {
         Cliente cliente = cita.getCliente();
         DetalleComprobante detalle = new DetalleComprobante();
 
-        ConceptoCobro conceptoConsulta = new ConceptoCobro("SRV-" + cita.getIdCita(), "Consulta: " + cita.getMotivo(), precioConsulta);
+        ConceptoCobro conceptoConsulta = new ConceptoCobro("SRV-" + cita.getIdCita(), "Consulta: ", precioConsulta);
         detalle.agregarItem(new ItemVenta(conceptoConsulta, 1));
 
         if (medicamentos != null && !medicamentos.isEmpty()) {
