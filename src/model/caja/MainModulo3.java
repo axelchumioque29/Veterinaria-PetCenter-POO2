@@ -25,7 +25,7 @@ public class MainModulo3 {
         ControladorCaja controladorCaja = new ControladorCaja();
         controladorCaja.iniciarTurno(cajeroTurno, saldoInicial);
 
-        // Registro de auditoría activo
+
         AuditoriaFinanciera.registrarAccion(cajeroTurno.getId(), "Apertura de caja con S/ " + saldoInicial);
 
         MenuCajaView menu = new MenuCajaView();
@@ -66,12 +66,12 @@ public class MainModulo3 {
 
                     controladorCaja.registrarCobro(idTx, boletaTest, tipoPago);
 
-                    // Mostrar desglose del IGV
+
                     System.out.println("\n--- DESGLOSE DEL COMPROBANTE ---");
                     System.out.printf("Valor Base (Sin IGV) : S/ %.2f\n", boletaTest.getSubtotalBase());
                     System.out.printf("IGV (18%%)            : S/ %.2f\n", boletaTest.getMontoIGV());
                     System.out.printf("Total Cobrado        : S/ %.2f\n", boletaTest.getTotal());
-                    System.out.println("--------------------------------");
+
                     break;
 
                 case 2:
@@ -100,7 +100,7 @@ public class MainModulo3 {
                     System.out.printf("Total Recaudado    : S/ %.2f\n", ingresosTotales);
                     System.out.printf("IGV a declarar     : S/ %.2f\n", igvAcumulado);
                     System.out.printf("Ganancia Neta Real : S/ %.2f\n", gananciaNeta);
-                    System.out.println("==============================\n");
+
                     break;
 
                 case 4:
