@@ -1,9 +1,10 @@
 package controller.clientes;
-
-import model.clientes.*;
-import java.time.LocalDateTime;
+import controller.clientes.FiltroEstadoCitaController;
+import controller.clientes.ProcesadorCitaController;
+import model.clientes.Cita;
+import model.clientes.CitaCruzadaException;
+import model.clientes.RepositorioGenerico;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ControladorCita {
     private RepositorioGenerico<Cita> repositorioCitas;
@@ -12,32 +13,18 @@ public class ControladorCita {
         this.repositorioCitas = repoCitas;
     }
 
-    // Agendar usando parámetros individuales (con validación de cruce)
-    public void agendarCita(String idCita, Cliente cliente, Mascota mascota, LocalDateTime fechaHora, IEstrategiaAtencion estrategiaAtencion) throws CitaCruzadaException {
-        Cita nuevaCita = new Cita(idCita, cliente, mascota, fechaHora, estrategiaAtencion);
-        ValidadorCita.validarCruceHorario(repositorioCitas.listarTodos(), nuevaCita);
-        repositorioCitas.agregar(nuevaCita);
-    }
-
-    // NUEVO: Agendar recibiendo el objeto Cita completo (para la Fachada, validando también el cruce)
+    // Agendar usando el nuevo ProcesadorCitaController
     public void agendarCita(Cita nuevaCita) throws CitaCruzadaException {
-        ValidadorCita.validarCruceHorario(repositorioCitas.listarTodos(), nuevaCita);
+        ProcesadorCitaController.validarYProcesar(repositorioCitas.listarTodos(), nuevaCita);
         repositorioCitas.agregar(nuevaCita);
     }
 
-    // Filtrar citas pendientes usando API Stream
+    // Filtrar citas pendientes usando el FiltroEstadoCitaController
     public List<Cita> obtenerCitasPendientes() {
-        return repositorioCitas.listarTodos().stream()
-                .filter(c -> c.getEstado() == EstadoCita.PENDIENTE)
-                .collect(Collectors.toList());
+        return FiltroEstadoCitaController.filtrarPendientes(repositorioCitas.listarTodos());
     }
 
-    // Listar todas las citas (Método estándar)
-    public List<Cita> obtenerTodasLasCitas() {
-        return repositorioCitas.listarTodos();
-    }
-
-    // Alias para que coincida exactamente con lo que pide la Fachada
+    // Método para listar todas las citas
     public List<Cita> listarCitas() {
         return repositorioCitas.listarTodos();
     }
