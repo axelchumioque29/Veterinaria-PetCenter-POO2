@@ -1,6 +1,5 @@
 package view.clientes;
 
-
 // Importaciones del Módulo 1
 import controller.clientes.ControladorCita;
 import controller.clientes.ControladorCliente;
@@ -18,6 +17,7 @@ import controller.farmacia.MainModulo2;
 
 // Importaciones del Módulo 3
 import controller.caja.ControladorCaja;
+import controller.caja.CalculadorIGV;
 import model.caja.Cajero;
 import view.caja.MenuCajaView;
 import model.caja.AuditoriaFinanciera;
@@ -29,9 +29,7 @@ public class MainSistemaIntegrado {
     public static void main(String[] args) throws Exception {
         Scanner scanner = new Scanner(System.in);
 
-        //
-        // modulo 1
-
+        // modulo recepcion
         RepositorioGenerico<Cliente> repoClientes = new RepositorioGenerico<>();
         RepositorioGenerico<Mascota> repoMascotas = new RepositorioGenerico<>();
         RepositorioGenerico<Cita> repoCitas = new RepositorioGenerico<>();
@@ -41,15 +39,10 @@ public class MainSistemaIntegrado {
         ControladorCita ctrlCita = new ControladorCita(repoCitas);
         VeterinariaFacade facadeAxel = new VeterinariaFacade(ctrlCliente, ctrlMascota, ctrlCita);
 
-
-        // modulo 2
-
-
+        //modulo clinico
         ClinicaFacade facadeFabricio = MainModulo2.crearDemostracion();
 
-
-        // modulo 3
-
+        // modulo caja
         System.out.println("=== CONFIGURACIÓN INICIAL DE CAJA ===");
         System.out.print("Ingrese ID del Cajero: ");
         String idCajero = scanner.nextLine();
@@ -57,43 +50,38 @@ public class MainSistemaIntegrado {
         String nombreCajero = scanner.nextLine();
         System.out.print("Ingrese el saldo inicial en caja (S/): ");
         double saldoInicial = scanner.nextDouble();
-        scanner.nextLine(); // Limpiar el buffer
+        scanner.nextLine();
 
         Cajero cajeroTurno = new Cajero(idCajero, nombreCajero);
         ControladorCaja controladorCaja = new ControladorCaja();
         controladorCaja.iniciarTurno(cajeroTurno, saldoInicial);
+
         AuditoriaFinanciera.registrarAccion(cajeroTurno.getId(), "Apertura de caja inicial con S/ " + saldoInicial);
 
-
+        // menu global
         int opcionPrincipal = 0;
         while (opcionPrincipal != 4) {
             System.out.println("\n=== SISTEMA VETERINARIO INTEGRADO ===");
-            System.out.println("1. Módulo de Recepción (Clientes y Citas )");
-            System.out.println("2. Módulo Clínico y Farmacia (Inventario y Recetas)");
-            System.out.println("3. Módulo de Facturación (Caja y Cobros)");
+            System.out.println("1. Módulo de Recepción (Clientes y Citas - Axel)");
+            System.out.println("2. Módulo Clínico y Farmacia (Inventario y Recetas - Fabricio)");
+            System.out.println("3. Módulo de Facturación (Caja y Cobros - Billy)");
             System.out.println("4. Apagar Sistema");
             System.out.print("Seleccione un módulo para operar: ");
             opcionPrincipal = scanner.nextInt();
-            scanner.nextLine(); // Limpiar el buffer
+            scanner.nextLine();
 
             if (opcionPrincipal == 1) {
-
                 view.clientes.MenuPrincipalView menuAxel = new view.clientes.MenuPrincipalView(facadeAxel);
                 menuAxel.mostrar();
-
             } else if (opcionPrincipal == 2) {
-
                 new CoordinadorFarmacia(facadeFabricio).iniciar();
-
             } else if (opcionPrincipal == 3) {
-
                 ejecutarModuloCaja(controladorCaja, cajeroTurno, repoClientes);
             }
         }
         System.out.println("\nApagando sistema veterinario... ¡Hasta pronto!");
         scanner.close();
     }
-
 
     private static void ejecutarModuloCaja(ControladorCaja controladorCaja, Cajero cajeroTurno, RepositorioGenerico<Cliente> repoClientes) {
         Scanner scanner = new Scanner(System.in);
@@ -114,11 +102,10 @@ public class MainSistemaIntegrado {
                     System.out.print("Ingrese DNI del cliente a cobrar: ");
                     String dniBusqueda = scanner.nextLine();
 
-                    // Búsqueda  en el repositorio
                     Cliente clienteReal = repoClientes.buscar(c -> c.getDni().equals(dniBusqueda));
 
                     if (clienteReal == null) {
-                        System.err.println("Error: Cliente no encontrado. Registre al cliente en el Módulo 1 (Recepción) primero.");
+                        System.err.println("Error: Cliente no encontrado. Registre al cliente en el Módulo 1 primero.");
                         break;
                     }
 
@@ -127,11 +114,11 @@ public class MainSistemaIntegrado {
                     System.out.print("Ingrese método de pago (EFECTIVO, TARJETA, YAPE, PLIN): ");
                     String tipoPago = scanner.nextLine();
 
-                    System.out.print("Ingrese descripción del concepto (Ej: Consulta médica, Venta de pastillas): ");
+                    System.out.print("Ingrese descripción del concepto: ");
                     String descripcion = scanner.nextLine();
                     System.out.print("Ingrese monto a cobrar (S/): ");
                     double monto = scanner.nextDouble();
-                    scanner.nextLine(); // Limpiar buffer
+                    scanner.nextLine();
 
                     model.caja.DetalleComprobante detalle = new model.caja.DetalleComprobante();
                     model.caja.ConceptoCobro concepto = new model.caja.ConceptoCobro("VTA-001", descripcion, monto);
@@ -140,11 +127,19 @@ public class MainSistemaIntegrado {
                     model.caja.Comprobante boleta = new model.caja.Boleta("B001", "000001", detalle, model.caja.Moneda.PEN, clienteReal);
 
                     controladorCaja.registrarCobro(idTx, boleta, tipoPago);
+
+                    System.out.println("\n--- DESGLOSE DEL COMPROBANTE ---");
+                    System.out.printf("Valor Base (Sin IGV) : S/ %.2f\n", boleta.getSubtotalBase());
+                    System.out.printf("IGV (18%%)            : S/ %.2f\n", boleta.getMontoIGV());
+                    System.out.printf("Total Cobrado        : S/ %.2f\n", boleta.getTotal());
+                    System.out.println("--------------------------------");
                     break;
 
                 case 2:
                     System.out.println("\n--- CERRANDO CAJA ---");
                     controladorCaja.getCajaActual().cerrarCaja();
+
+                    // Auditoría activa al cerrar caja desde el menú general
                     AuditoriaFinanciera.registrarAccion(cajeroTurno.getId(), "Cierre de caja. Saldo final: S/ " + controladorCaja.getCajaActual().getSaldoFinal());
                     System.out.println("Caja cerrada correctamente. Ya no se admiten cobros.");
                     break;
@@ -152,12 +147,20 @@ public class MainSistemaIntegrado {
                 case 3:
                     System.out.println("\n=== REPORTE DE CAJA DIARIA ===");
                     model.caja.CajaDiaria caja = controladorCaja.getCajaActual();
-                    System.out.println("Cajero a cargo : " + cajeroTurno.getNombre() + " (ID: " + cajeroTurno.getId() + ")");
-                    System.out.println("Estado de caja : " + caja.getEstado());
-                    System.out.println("Saldo Inicial  : S/ " + caja.getSaldoInicial());
-                    System.out.println("Saldo Final    : S/ " + caja.getSaldoFinal());
-                    System.out.println("Ingresos netos : S/ " + (caja.getSaldoFinal() - caja.getSaldoInicial()));
-                    System.out.println("==============================");
+                    double ingresosTotales = caja.getSaldoFinal() - caja.getSaldoInicial();
+
+                    double gananciaNeta = CalculadorIGV.extraerSubtotal(ingresosTotales);
+                    double igvAcumulado = CalculadorIGV.calcularIGV(gananciaNeta);
+
+                    System.out.println("Cajero a cargo     : " + cajeroTurno.getNombre() + " (ID: " + cajeroTurno.getId() + ")");
+                    System.out.println("Estado de caja     : " + caja.getEstado());
+                    System.out.println("Saldo Inicial      : S/ " + caja.getSaldoInicial());
+                    System.out.println("Saldo Final        : S/ " + caja.getSaldoFinal());
+                    System.out.println("------------------------------");
+                    System.out.printf("Total Recaudado    : S/ %.2f\n", ingresosTotales);
+                    System.out.printf("IGV a declarar     : S/ %.2f\n", igvAcumulado);
+                    System.out.printf("Ganancia Neta Real : S/ %.2f\n", gananciaNeta);
+
                     break;
 
                 case 4:
@@ -168,10 +171,12 @@ public class MainSistemaIntegrado {
                     String nuevoNombre = scanner.nextLine();
                     System.out.print("Ingrese el nuevo saldo inicial en caja (S/): ");
                     double nuevoSaldo = scanner.nextDouble();
-                    scanner.nextLine(); // Limpiar buffer
+                    scanner.nextLine();
 
                     cajeroTurno = new Cajero(nuevoId, nuevoNombre);
                     controladorCaja.iniciarTurno(cajeroTurno, nuevoSaldo);
+
+                    // Auditoría activa al cambiar de turno
                     AuditoriaFinanciera.registrarAccion(cajeroTurno.getId(), "Apertura de nuevo turno con S/ " + nuevoSaldo);
                     break;
 

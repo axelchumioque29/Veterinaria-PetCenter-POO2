@@ -1,7 +1,7 @@
 package model.caja;
 
-import model.caja.Cajero;
 import controller.caja.ControladorCaja;
+import controller.caja.CalculadorIGV;
 import view.caja.MenuCajaView;
 import model.clientes.Cliente;
 import java.util.Scanner;
@@ -24,6 +24,7 @@ public class MainModulo3 {
 
         ControladorCaja controladorCaja = new ControladorCaja();
         controladorCaja.iniciarTurno(cajeroTurno, saldoInicial);
+
 
         AuditoriaFinanciera.registrarAccion(cajeroTurno.getId(), "Apertura de caja con S/ " + saldoInicial);
 
@@ -56,7 +57,6 @@ public class MainModulo3 {
                     double montoCobro = scanner.nextDouble();
                     scanner.nextLine(); // Limpiar buffer
 
-
                     Cliente clientePrueba = new Cliente("76543210", "Juan Perez", "987654321", "Av. San Ignacio 123");
                     model.caja.DetalleComprobante detalle = new model.caja.DetalleComprobante();
                     model.caja.ConceptoCobro concepto = new model.caja.ConceptoCobro("SRV-VET", descripcionServicio, montoCobro);
@@ -65,12 +65,21 @@ public class MainModulo3 {
                     model.caja.Comprobante boletaTest = new model.caja.Boleta("B001", "000001", detalle, model.caja.Moneda.PEN, clientePrueba);
 
                     controladorCaja.registrarCobro(idTx, boletaTest, tipoPago);
+
+
+                    System.out.println("\n--- DESGLOSE DEL COMPROBANTE ---");
+                    System.out.printf("Valor Base (Sin IGV) : S/ %.2f\n", boletaTest.getSubtotalBase());
+                    System.out.printf("IGV (18%%)            : S/ %.2f\n", boletaTest.getMontoIGV());
+                    System.out.printf("Total Cobrado        : S/ %.2f\n", boletaTest.getTotal());
+
                     break;
 
                 case 2:
                     System.out.println("\n--- CERRANDO CAJA ---");
                     controladorCaja.getCajaActual().cerrarCaja();
                     double saldoCierre = controladorCaja.getCajaActual().getSaldoFinal();
+
+                    // Auditoría activa para el cierre
                     AuditoriaFinanciera.registrarAccion(cajeroTurno.getId(), "Cierre de caja. Saldo final: S/ " + saldoCierre);
                     System.out.println("Caja cerrada. Ya no se admiten nuevos cobros.");
                     break;
@@ -78,12 +87,19 @@ public class MainModulo3 {
                 case 3:
                     System.out.println("\n=== REPORTE DE CAJA DIARIA ===");
                     model.caja.CajaDiaria caja = controladorCaja.getCajaActual();
-                    System.out.println("Cajero a cargo : " + cajeroTurno.getNombre() + " (ID: " + cajeroTurno.getId() + ")");
-                    System.out.println("Estado de caja : " + caja.getEstado());
-                    System.out.println("Saldo Inicial  : S/ " + caja.getSaldoInicial());
-                    System.out.println("Saldo Final    : S/ " + caja.getSaldoFinal());
-                    double ingresos = caja.getSaldoFinal() - caja.getSaldoInicial();
-                    System.out.println("Ingresos netos : S/ " + ingresos);
+                    double ingresosTotales = caja.getSaldoFinal() - caja.getSaldoInicial();
+
+                    double gananciaNeta = CalculadorIGV.extraerSubtotal(ingresosTotales);
+                    double igvAcumulado = CalculadorIGV.calcularIGV(gananciaNeta);
+
+                    System.out.println("Cajero a cargo     : " + cajeroTurno.getNombre() + " (ID: " + cajeroTurno.getId() + ")");
+                    System.out.println("Estado de caja     : " + caja.getEstado());
+                    System.out.println("Saldo Inicial      : S/ " + caja.getSaldoInicial());
+                    System.out.println("Saldo Final        : S/ " + caja.getSaldoFinal());
+                    System.out.println("------------------------------");
+                    System.out.printf("Total Recaudado    : S/ %.2f\n", ingresosTotales);
+                    System.out.printf("IGV a declarar     : S/ %.2f\n", igvAcumulado);
+                    System.out.printf("Ganancia Neta Real : S/ %.2f\n", gananciaNeta);
 
                     break;
 
@@ -100,11 +116,13 @@ public class MainModulo3 {
 
                     cajeroTurno = new Cajero(nuevoId, nuevoNombre);
                     controladorCaja.iniciarTurno(cajeroTurno, nuevoSaldo);
+
+                    // Auditoría activa para nuevo turno
                     AuditoriaFinanciera.registrarAccion(cajeroTurno.getId(), "Apertura de caja con S/ " + nuevoSaldo);
                     break;
 
                 case 5:
-                    System.out.println("\nSaliendo del Modulo de Caja");
+                    System.out.println("\nSaliendo del Modulo de Caja... ¡Hasta pronto!");
                     break;
 
                 default:
