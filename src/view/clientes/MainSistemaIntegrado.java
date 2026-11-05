@@ -1,7 +1,7 @@
 package view.clientes;
 
 
-
+// Importaciones del Módulo 1
 import controller.clientes.ControladorCita;
 import controller.clientes.ControladorCliente;
 import controller.clientes.ControladorMascota;
@@ -11,10 +11,17 @@ import model.clientes.Cliente;
 import model.clientes.Mascota;
 import model.clientes.RepositorioGenerico;
 
+// Importaciones del Módulo 2
+import controller.farmacia.ClinicaFacade;
+import controller.farmacia.CoordinadorFarmacia;
+import controller.farmacia.MainModulo2;
+
+// Importaciones del Módulo 3
 import controller.caja.ControladorCaja;
 import model.caja.Cajero;
 import view.caja.MenuCajaView;
 import model.caja.AuditoriaFinanciera;
+import model.caja.EstadoCaja;
 
 import java.util.Scanner;
 
@@ -22,8 +29,8 @@ public class MainSistemaIntegrado {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-
-        // modulo clientes
+        //
+        // modulo 1
 
         RepositorioGenerico<Cliente> repoClientes = new RepositorioGenerico<>();
         RepositorioGenerico<Mascota> repoMascotas = new RepositorioGenerico<>();
@@ -32,11 +39,16 @@ public class MainSistemaIntegrado {
         ControladorCliente ctrlCliente = new ControladorCliente(repoClientes);
         ControladorMascota ctrlMascota = new ControladorMascota(repoMascotas);
         ControladorCita ctrlCita = new ControladorCita(repoCitas);
-
         VeterinariaFacade facadeAxel = new VeterinariaFacade(ctrlCliente, ctrlMascota, ctrlCita);
 
 
-        // modulo caja
+        // modulo 2
+
+
+        ClinicaFacade facadeFabricio = MainModulo2.crearDemostracion();
+
+
+        // modulo 3
 
         System.out.println("=== CONFIGURACIÓN INICIAL DE CAJA ===");
         System.out.print("Ingrese ID del Cajero: ");
@@ -45,23 +57,24 @@ public class MainSistemaIntegrado {
         String nombreCajero = scanner.nextLine();
         System.out.print("Ingrese el saldo inicial en caja (S/): ");
         double saldoInicial = scanner.nextDouble();
+        scanner.nextLine(); // Limpiar el buffer
 
         Cajero cajeroTurno = new Cajero(idCajero, nombreCajero);
         ControladorCaja controladorCaja = new ControladorCaja();
         controladorCaja.iniciarTurno(cajeroTurno, saldoInicial);
-        AuditoriaFinanciera.registrarAccion(cajeroTurno.getId(), "Apertura de caja con S/ " + saldoInicial);
+        AuditoriaFinanciera.registrarAccion(cajeroTurno.getId(), "Apertura de caja inicial con S/ " + saldoInicial);
 
-
-        // modulo integrado
 
         int opcionPrincipal = 0;
-        while (opcionPrincipal != 3) {
+        while (opcionPrincipal != 4) {
             System.out.println("\n=== SISTEMA VETERINARIO INTEGRADO ===");
-            System.out.println("1. Módulo de Recepción (Clientes y Citas)");
-            System.out.println("2. Módulo de Facturación (Caja y Cobros)");
-            System.out.println("3. Apagar Sistema");
-            System.out.print("Seleccione un módulo: ");
+            System.out.println("1. Módulo de Recepción (Clientes y Citas )");
+            System.out.println("2. Módulo Clínico y Farmacia (Inventario y Recetas)");
+            System.out.println("3. Módulo de Facturación (Caja y Cobros)");
+            System.out.println("4. Apagar Sistema");
+            System.out.print("Seleccione un módulo para operar: ");
             opcionPrincipal = scanner.nextInt();
+            scanner.nextLine(); // Limpiar el buffer
 
             if (opcionPrincipal == 1) {
 
@@ -70,10 +83,14 @@ public class MainSistemaIntegrado {
 
             } else if (opcionPrincipal == 2) {
 
+                new CoordinadorFarmacia(facadeFabricio).iniciar();
+
+            } else if (opcionPrincipal == 3) {
+
                 ejecutarModuloCaja(controladorCaja, cajeroTurno, repoClientes);
             }
         }
-        System.out.println("Sistema apagado correctamente.");
+        System.out.println("\nApagando sistema veterinario... ¡Hasta pronto!");
         scanner.close();
     }
 
@@ -83,20 +100,25 @@ public class MainSistemaIntegrado {
         MenuCajaView menu = new MenuCajaView();
         int opcion = 0;
 
-        while (opcion != 4) {
+        while (opcion != 5) {
             opcion = menu.mostrarMenuYCapturarOpcion();
 
             switch (opcion) {
                 case 1:
                     System.out.println("\n--- REGISTRO DE NUEVO COBRO ---");
+                    if (controladorCaja.getCajaActual().getEstado() == EstadoCaja.CERRADA) {
+                        System.err.println("Caja cerrada. Elija la opción 4 para abrir una nueva caja.");
+                        break;
+                    }
 
                     System.out.print("Ingrese DNI del cliente a cobrar: ");
                     String dniBusqueda = scanner.nextLine();
 
+                    // Búsqueda  en el repositorio
                     Cliente clienteReal = repoClientes.buscar(c -> c.getDni().equals(dniBusqueda));
 
                     if (clienteReal == null) {
-                        System.err.println("Error: Cliente no encontrado. Registre al cliente en el Módulo de Recepción primero.");
+                        System.err.println("Error: Cliente no encontrado. Registre al cliente en el Módulo 1 (Recepción) primero.");
                         break;
                     }
 
@@ -105,9 +127,14 @@ public class MainSistemaIntegrado {
                     System.out.print("Ingrese método de pago (EFECTIVO, TARJETA, YAPE, PLIN): ");
                     String tipoPago = scanner.nextLine();
 
+                    System.out.print("Ingrese descripción del concepto (Ej: Consulta médica, Venta de pastillas): ");
+                    String descripcion = scanner.nextLine();
+                    System.out.print("Ingrese monto a cobrar (S/): ");
+                    double monto = scanner.nextDouble();
+                    scanner.nextLine(); // Limpiar buffer
 
                     model.caja.DetalleComprobante detalle = new model.caja.DetalleComprobante();
-                    model.caja.ConceptoCobro concepto = new model.caja.ConceptoCobro("SRV-VET", "Servicio Veterinario", 150.0);
+                    model.caja.ConceptoCobro concepto = new model.caja.ConceptoCobro("VTA-001", descripcion, monto);
                     detalle.agregarItem(new model.caja.ItemVenta(concepto, 1));
 
                     model.caja.Comprobante boleta = new model.caja.Boleta("B001", "000001", detalle, model.caja.Moneda.PEN, clienteReal);
@@ -118,23 +145,42 @@ public class MainSistemaIntegrado {
                 case 2:
                     System.out.println("\n--- CERRANDO CAJA ---");
                     controladorCaja.getCajaActual().cerrarCaja();
-                    AuditoriaFinanciera.registrarAccion(cajeroTurno.getId(), "Cierre de caja. Saldo: S/ " + controladorCaja.getCajaActual().getSaldoFinal());
-                    System.out.println("Caja cerrada. Ya no se admiten cobros.");
+                    AuditoriaFinanciera.registrarAccion(cajeroTurno.getId(), "Cierre de caja. Saldo final: S/ " + controladorCaja.getCajaActual().getSaldoFinal());
+                    System.out.println("Caja cerrada correctamente. Ya no se admiten cobros.");
                     break;
 
                 case 3:
                     System.out.println("\n=== REPORTE DE CAJA DIARIA ===");
                     model.caja.CajaDiaria caja = controladorCaja.getCajaActual();
-                    System.out.println("Cajero         : " + cajeroTurno.getNombre());
+                    System.out.println("Cajero a cargo : " + cajeroTurno.getNombre() + " (ID: " + cajeroTurno.getId() + ")");
                     System.out.println("Estado de caja : " + caja.getEstado());
                     System.out.println("Saldo Inicial  : S/ " + caja.getSaldoInicial());
                     System.out.println("Saldo Final    : S/ " + caja.getSaldoFinal());
                     System.out.println("Ingresos netos : S/ " + (caja.getSaldoFinal() - caja.getSaldoInicial()));
+                    System.out.println("==============================");
                     break;
 
                 case 4:
+                    System.out.println("\n--- ABRIENDO NUEVO TURNO ---");
+                    System.out.print("Ingrese ID del Nuevo Cajero: ");
+                    String nuevoId = scanner.nextLine();
+                    System.out.print("Ingrese Nombre del Nuevo Cajero: ");
+                    String nuevoNombre = scanner.nextLine();
+                    System.out.print("Ingrese el nuevo saldo inicial en caja (S/): ");
+                    double nuevoSaldo = scanner.nextDouble();
+                    scanner.nextLine(); // Limpiar buffer
+
+                    cajeroTurno = new Cajero(nuevoId, nuevoNombre);
+                    controladorCaja.iniciarTurno(cajeroTurno, nuevoSaldo);
+                    AuditoriaFinanciera.registrarAccion(cajeroTurno.getId(), "Apertura de nuevo turno con S/ " + nuevoSaldo);
+                    break;
+
+                case 5:
                     System.out.println("\nVolviendo al menú principal del sistema...");
                     break;
+
+                default:
+                    System.out.println("\nOpción inválida.");
             }
         }
     }
