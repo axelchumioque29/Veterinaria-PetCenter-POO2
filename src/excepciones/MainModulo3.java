@@ -43,8 +43,8 @@ public class MainModulo3 {
                     System.out.print("Ingrese método de pago (EFECTIVO, TARJETA, YAPE, PLIN): ");
                     String tipoPago = scanner.nextLine();
 
-                    // --- INTEGRACIÓN CON EL MÓDULO DE CLIENTES ---
-                    // Simulamos que el módulo 1 nos envía este cliente para cobrarle
+                    // --- modulo de prueba ---
+                    //
                     Cliente clientePrueba = new Cliente("76543210", "Juan Perez", "987654321", "Av. San Ignacio 123");
 
                     model.caja.DetalleComprobante detalle = new model.caja.DetalleComprobante();
