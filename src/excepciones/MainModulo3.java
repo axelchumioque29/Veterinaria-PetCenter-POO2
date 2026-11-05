@@ -11,7 +11,6 @@ public class MainModulo3 {
         Scanner scanner = new Scanner(System.in);
         System.out.println("=== INICIANDO SISTEMA DE FACTURACION ===");
 
-        // 1. CONFIGURACIÓN INICIAL DEL TURNO
         System.out.print("Ingrese ID del Cajero: ");
         String idCajero = scanner.nextLine();
         System.out.print("Ingrese Nombre del Cajero: ");
@@ -31,13 +30,13 @@ public class MainModulo3 {
         MenuCajaView menu = new MenuCajaView();
         int opcion = 0;
 
-        // 2. BUCLE DEL MENÚ PRINCIPAL
+        // 2. MENÚ PRINCIPAL
         while (opcion != 4) {
             opcion = menu.mostrarMenuYCapturarOpcion();
 
             switch (opcion) {
                 case 1:
-                    // OPCIÓN 1: REGISTRAR COBRO (Integrado con Builder, Strategy y Facade)
+                    // OPCIÓN 1: REGISTRAR COBRO
                     System.out.println("\n--- REGISTRO DE NUEVO COBRO ---");
                     scanner.nextLine(); // Limpiar el buffer del scanner
 
@@ -47,7 +46,7 @@ public class MainModulo3 {
                     System.out.print("Ingrese método de pago (EFECTIVO, TARJETA, YAPE, PLIN): ");
                     String tipoPago = scanner.nextLine();
 
-                    // Simulamos los datos que vendrían de los módulos 1 y 2
+                    // Simulamos los datos de los módulos 1 y 2
                     Cliente clientePrueba = new Cliente("76543210", "Juan Perez", "987654321", "Av. San Ignacio 123");
                     model.caja.DetalleComprobante detalle = new model.caja.DetalleComprobante();
                     model.caja.ConceptoCobro concepto = new model.caja.ConceptoCobro("SRV-TEST", "Consulta Médica General", 150.0);
@@ -55,7 +54,7 @@ public class MainModulo3 {
 
                     model.caja.Comprobante boletaTest = new model.caja.Boleta("B001", "000001", detalle, model.caja.Moneda.PEN, clientePrueba);
 
-                    // La fachada procesa todo y el dinero entra a la caja
+
                     controladorCaja.registrarCobro(idTx, boletaTest, tipoPago);
                     break;
 
