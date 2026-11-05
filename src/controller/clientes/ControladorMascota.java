@@ -7,22 +7,20 @@ import java.util.List;
 public class ControladorMascota {
     private RepositorioGenerico<Mascota> repositorioMascotas;
 
-    public ControladorMascota(RepositorioGenerico<Mascota> repositorioMascotas) {
-        this.repositorioMascotas = repositorioMascotas;
+    public ControladorMascota(RepositorioGenerico<Mascota> repoMascotas) {
+        this.repositorioMascotas = repoMascotas;
     }
 
     public void registrarMascota(Mascota mascota) {
         repositorioMascotas.agregar(mascota);
     }
 
-    public List<Mascota> obtenerTodasLasMascotas() {
+    public List<Mascota> listarMascotas() {
         return repositorioMascotas.listarTodos();
     }
 
+    // Delegando la búsqueda a la micro-clase BuscadorMascotaController
     public Mascota buscarMascotaPorCodigo(String codigo) {
-        return repositorioMascotas.listarTodos().stream()
-                .filter(m -> m.getIdMascota().equals(codigo)) // <--- Cambiado a getIdMascota()
-                .findFirst()
-                .orElse(null);
+        return BuscadorMascotaController.buscarPorCodigo(repositorioMascotas.listarTodos(), codigo);
     }
 }

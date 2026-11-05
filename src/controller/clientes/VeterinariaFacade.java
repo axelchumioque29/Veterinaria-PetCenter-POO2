@@ -35,7 +35,7 @@ public class VeterinariaFacade {
     }
 
     public List<Mascota> listarMascotas() {
-        return controladorMascota.obtenerTodasLasMascotas();
+        return controladorMascota.listarMascotas();
     }
 
     public void agendarCita(String idCita, String dniCliente, String codigoMascota, LocalDateTime fechaHora, IEstrategiaAtencion estrategia) throws Exception {

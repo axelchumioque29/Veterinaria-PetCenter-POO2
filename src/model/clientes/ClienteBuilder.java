@@ -4,6 +4,7 @@ package model.clientes;
 public class ClienteBuilder implements IClienteBuilder {
     private String dni;
     private String nombre;
+    private String apellido; // Añadido para capturar el apellido
     private String telefono;
     private String direccion;
 
@@ -20,6 +21,12 @@ public class ClienteBuilder implements IClienteBuilder {
     }
 
     @Override
+    public IClienteBuilder setApellido(String apellido) {
+        this.apellido = apellido;
+        return this; // ¡Ahora retorna 'this' para no romper la cadena!
+    }
+
+    @Override
     public IClienteBuilder setTelefono(String telefono) {
         this.telefono = telefono;
         return this;
@@ -33,12 +40,8 @@ public class ClienteBuilder implements IClienteBuilder {
 
     @Override
     public Cliente build() {
-        // Aquí podríamos validar reglas antes de retornar el objeto
-        return new Cliente(dni, nombre, telefono, direccion);
-    }
-
-    @Override
-    public IClienteBuilder setApellido(String apellido) {
-        return null;
+        // Unimos el nombre y el apellido para enviárselo al constructor de Cliente
+        String nombreCompleto = (apellido != null && !apellido.isEmpty()) ? (nombre + " " + apellido) : nombre;
+        return new Cliente(dni, nombreCompleto, telefono, direccion);
     }
 }
