@@ -8,8 +8,8 @@ import java.util.stream.Collectors;
 public class ControladorCita {
     private RepositorioGenerico<Cita> repositorioCitas;
 
-    public ControladorCita() {
-        this.repositorioCitas = new RepositorioGenerico<>();
+    public ControladorCita(RepositorioGenerico<Cita> repoCitas) {
+        this.repositorioCitas = repoCitas;
     }
 
     // Agendar usando parámetros individuales (con validación de cruce)
