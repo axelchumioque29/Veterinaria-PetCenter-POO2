@@ -1,8 +1,4 @@
-package excepciones;
-
-import model.caja.CajaDiaria;
-import model.caja.Cajero;
-import model.caja.EstadoCaja;
+package model.caja;
 
 public class PruebaCaja {
     public void ejecutarTestAperturaYCierre() {

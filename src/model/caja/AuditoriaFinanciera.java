@@ -1,4 +1,4 @@
-package excepciones;
+package model.caja;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

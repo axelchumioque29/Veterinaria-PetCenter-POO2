@@ -1,6 +1,5 @@
-package excepciones;
+package model.caja;
 
-import model.caja.Cajero;
 import controller.caja.ControladorCaja;
 import view.caja.MenuCajaView;
 import model.clientes.Cliente;
