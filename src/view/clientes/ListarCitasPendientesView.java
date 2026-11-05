@@ -17,10 +17,12 @@ public class ListarCitasPendientesView {
             System.out.println("No hay citas pendientes.");
         } else {
             for (Cita c : citas) {
-                System.out.println("ID: " + c.getIdCita() +
-                        " | Cliente DNI: " + c.getCliente().getDni() +
-                        " | Mascota: " + c.getMascota().getNombre() +
-                        " | Prioridad: " + c.getPrioridad());
+                // Ejemplo de cómo debe imprimirse para que vuelva a mostrar la hora:
+                System.out.println("ID: " + c.getIdCita()
+                        + " | Cliente DNI: " + c.getCliente().getDni()
+                        + " | Mascota: " + c.getMascota().getNombre()
+                        + " | Fecha y Hora: " + c.getFechaHora()
+                        + " | Prioridad: " + c.getPrioridad());
             }
         }
     }

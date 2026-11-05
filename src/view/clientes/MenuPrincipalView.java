@@ -9,7 +9,7 @@ public class MenuPrincipalView {
         this.facade = facade;
     }
 
-    public void mostrar() {
+    public void mostrar() throws Exception {
         int opcion;
         do {
             System.out.println("\n=VETERINARIA PETCENTER ");

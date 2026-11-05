@@ -14,7 +14,16 @@ public class ControladorCita {
     }
 
     // Agendar usando el nuevo ProcesadorCitaController
-    public void agendarCita(Cita nuevaCita) throws CitaCruzadaException {
+    public void agendarCita(Cita nuevaCita) throws Exception {
+        // Validar si ya existe una cita con el mismo ID
+        boolean existeId = repositorioCitas.listarTodos().stream()
+                .anyMatch(c -> c.getIdCita().equals(nuevaCita.getIdCita()));
+
+        if (existeId) {
+            throw new Exception("Error: Ya existe una cita registrada con el ID " + nuevaCita.getIdCita());
+        }
+
+        // Validar cruce de horario
         ProcesadorCitaController.validarYProcesar(repositorioCitas.listarTodos(), nuevaCita);
         repositorioCitas.agregar(nuevaCita);
     }

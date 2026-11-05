@@ -22,7 +22,7 @@ public class VeterinariaFacade {
 
     // --- Métodos unificados para el negocio ---
 
-    public void registrarCliente(Cliente cliente) {
+    public void registrarCliente(Cliente cliente) throws Exception {
         controladorCliente.registrarCliente(cliente);
     }
 
@@ -30,7 +30,7 @@ public class VeterinariaFacade {
         return controladorCliente.listarClientes();
     }
 
-    public void registrarMascota(Mascota mascota) {
+    public void registrarMascota(Mascota mascota) throws Exception {
         controladorMascota.registrarMascota(mascota);
     }
 

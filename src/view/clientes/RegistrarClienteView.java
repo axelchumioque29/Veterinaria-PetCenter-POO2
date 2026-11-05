@@ -11,23 +11,28 @@ public class RegistrarClienteView {
         this.facade = facade;
     }
 
-    public void ejecutar() {
-        System.out.println("\n--- REGISTRAR CLIENTE ---");
-        String dni = ConsolaUtil.leerTexto("Ingrese DNI: ");
-        String nombre = ConsolaUtil.leerTexto("Ingrese Nombres: ");
-        String apellido = ConsolaUtil.leerTexto("Ingrese Apellidos: ");
-        String telefono = ConsolaUtil.leerTexto("Ingrese Telefono: ");
-        String direccion = ConsolaUtil.leerTexto("Ingrese Direccion: ");
+    public void ejecutar() throws Exception {
+        try {
+            System.out.println("\n--- REGISTRAR CLIENTE ---");
+            String dni = ConsolaUtil.leerTexto("Ingrese DNI: ");
+            String nombre = ConsolaUtil.leerTexto("Ingrese Nombres: ");
+            String apellido = ConsolaUtil.leerTexto("Ingrese Apellidos: ");
+            String telefono = ConsolaUtil.leerTexto("Ingrese Telefono: ");
+            String direccion = ConsolaUtil.leerTexto("Ingrese Direccion: ");
 
-        Cliente cliente = new ClienteBuilder()
-                .setDni(dni)
-                .setNombre(nombre)
-                .setApellido(apellido)
-                .setTelefono(telefono)
-                .setDireccion(direccion)
-                .build();
+            Cliente cliente = new ClienteBuilder()
+                    .setDni(dni)
+                    .setNombre(nombre)
+                    .setApellido(apellido)
+                    .setTelefono(telefono)
+                    .setDireccion(direccion)
+                    .build();
 
-        facade.registrarCliente(cliente);
-        System.out.println("¡Cliente registrado exitosamente!");
+            facade.registrarCliente(cliente);
+            System.out.println("¡Cliente registrado exitosamente!");
+
+        } catch (Exception e) {
+            System.out.println("Error al registrar cliente: " + e.getMessage());
+        };
     }
 }

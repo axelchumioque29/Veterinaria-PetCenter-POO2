@@ -11,24 +11,29 @@ public class RegistrarPerroView {
         this.facade = facade;
     }
 
-    public void ejecutar() {
-        System.out.println("\n--- REGISTRAR PERRO ---");
-        String codigo = ConsolaUtil.leerTexto("Ingrese Codigo de Mascota: ");
-        String nombre = ConsolaUtil.leerTexto("Ingrese Nombre: ");
-        int edad = ConsolaUtil.leerEntero("Ingrese Edad (anos): ");
-        String raza = ConsolaUtil.leerTexto("Ingrese Raza: ");
-        double peso = ConsolaUtil.leerDouble("Ingrese Peso (kg): ");
-        String nivelEnergia = ConsolaUtil.leerTexto("Ingrese Nivel de Energia (Alto/Medio/Bajo): ");
+    public void ejecutar() throws Exception {
+        try {
+            System.out.println("\n--- REGISTRAR PERRO ---");
+            String codigo = ConsolaUtil.leerTexto("Ingrese Codigo de Mascota: ");
+            String nombre = ConsolaUtil.leerTexto("Ingrese Nombre: ");
+            int edad = ConsolaUtil.leerEntero("Ingrese Edad (anos): ");
+            String raza = ConsolaUtil.leerTexto("Ingrese Raza: ");
+            double peso = ConsolaUtil.leerDouble("Ingrese Peso (kg): ");
+            String nivelEnergia = ConsolaUtil.leerTexto("Ingrese Nivel de Energia (Alto/Medio/Bajo): ");
 
-        Mascota perro = new MascotaBuilder()
-                .setCodigo(codigo)
-                .setNombre(nombre)
-                .setEdad(edad)
-                .setRaza(raza)
-                .setPeso(peso)
-                .buildPerro(nivelEnergia);
+            Mascota perro = new MascotaBuilder()
+                    .setCodigo(codigo)
+                    .setNombre(nombre)
+                    .setEdad(edad)
+                    .setRaza(raza)
+                    .setPeso(peso)
+                    .buildPerro(nivelEnergia);
 
-        facade.registrarMascota(perro);
-        System.out.println("¡Perro registrado exitosamente!");
+            facade.registrarMascota(perro);
+            System.out.println("¡Perro registrado exitosamente!");
+
+        } catch (Exception e) {
+            System.out.println("Error al registrar perro: " + e.getMessage());
+        }
     }
 }
