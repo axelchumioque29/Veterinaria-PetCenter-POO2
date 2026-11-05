@@ -27,7 +27,7 @@ public class ControladorCaja {
             return;
         }
 
-        // Validación estricta: Bloquea si la caja ya fue cerrada
+        // Bloquea si la caja ya fue cerrada
         if (cajaActual.getEstado() == EstadoCaja.CERRADA) {
             System.err.println("ERROR: La caja actual está CERRADA. Utilice la opción 4 para abrir un nuevo turno.");
             return;
