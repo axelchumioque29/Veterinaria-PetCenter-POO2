@@ -12,15 +12,16 @@ public class ControladorCita {
         this.repositorioCitas = new RepositorioGenerico<>();
     }
 
-    // Agendar una nueva cita recibiendo la estrategia de atención (Strategy)
+    // Agendar usando parámetros individuales (con validación de cruce)
     public void agendarCita(String idCita, Cliente cliente, Mascota mascota, LocalDateTime fechaHora, IEstrategiaAtencion estrategiaAtencion) throws CitaCruzadaException {
-        // Pasamos la estrategia al constructor actualizado de Cita
         Cita nuevaCita = new Cita(idCita, cliente, mascota, fechaHora, estrategiaAtencion);
-
-        // Validamos usando el validador de cruce de horarios
         ValidadorCita.validarCruceHorario(repositorioCitas.listarTodos(), nuevaCita);
+        repositorioCitas.agregar(nuevaCita);
+    }
 
-        // Si pasa la validación, se agrega al repositorio
+    // NUEVO: Agendar recibiendo el objeto Cita completo (para la Fachada, validando también el cruce)
+    public void agendarCita(Cita nuevaCita) throws CitaCruzadaException {
+        ValidadorCita.validarCruceHorario(repositorioCitas.listarTodos(), nuevaCita);
         repositorioCitas.agregar(nuevaCita);
     }
 
@@ -31,8 +32,13 @@ public class ControladorCita {
                 .collect(Collectors.toList());
     }
 
-    // Listar todas las citas
+    // Listar todas las citas (Método estándar)
     public List<Cita> obtenerTodasLasCitas() {
+        return repositorioCitas.listarTodos();
+    }
+
+    // Alias para que coincida exactamente con lo que pide la Fachada
+    public List<Cita> listarCitas() {
         return repositorioCitas.listarTodos();
     }
 }
