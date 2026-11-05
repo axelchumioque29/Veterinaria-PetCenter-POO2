@@ -9,14 +9,14 @@ import java.util.ArrayList;
 public class MainModulo2 {
     public static ClinicaFacade crearDemostracion() {
         ClinicaFacade clinica = new ClinicaFacade();
-        Mascota mascota = new Mascota("M001", "Luna", 3, "Mestiza") {
-            @Override
+        Mascota mascota = new Mascota("M001", "Luna", 3, "Mestiza",10.5) {
+
             public String emitirSonido() { return "Guau"; }
         };
         ArrayList<Mascota> mascotas = new ArrayList<>();
         mascotas.add(mascota);
         clinica.registrarCliente(new Cliente("00000000", "Cliente de demostración", "000000000",
-                "Dirección de demostración", mascotas));
+                "Dirección de demostración"));
         clinica.registrarMedicamento("Medicamento", "MED001", "Producto de demostración", 15.0,
                 "Principio de demostración", 5);
         clinica.registrarLote("MED001", "LOTE001", LocalDate.now().plusMonths(6), 20);
