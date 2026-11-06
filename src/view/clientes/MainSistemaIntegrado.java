@@ -62,9 +62,9 @@ public class MainSistemaIntegrado {
         int opcionPrincipal = 0;
         while (opcionPrincipal != 4) {
             System.out.println("\n=== SISTEMA VETERINARIO INTEGRADO ===");
-            System.out.println("1. Módulo de Recepción (Clientes y Citas - Axel)");
-            System.out.println("2. Módulo Clínico y Farmacia (Inventario y Recetas - Fabricio)");
-            System.out.println("3. Módulo de Facturación (Caja y Cobros - Billy)");
+            System.out.println("1. Módulo de Recepción (Clientes y Citas )");
+            System.out.println("2. Módulo Clínico y Farmacia (Inventario y Recetas)");
+            System.out.println("3. Módulo de Facturación (Caja y Cobros)");
             System.out.println("4. Apagar Sistema");
             System.out.print("Seleccione un módulo para operar: ");
             opcionPrincipal = scanner.nextInt();
@@ -79,7 +79,7 @@ public class MainSistemaIntegrado {
                 ejecutarModuloCaja(controladorCaja, cajeroTurno, repoClientes);
             }
         }
-        System.out.println("\nApagando sistema veterinario... ¡Hasta pronto!");
+        System.out.println("\nApagando sistema veterinario");
         scanner.close();
     }
 
@@ -132,7 +132,7 @@ public class MainSistemaIntegrado {
                     System.out.printf("Valor Base (Sin IGV) : S/ %.2f\n", boleta.getSubtotalBase());
                     System.out.printf("IGV (18%%)            : S/ %.2f\n", boleta.getMontoIGV());
                     System.out.printf("Total Cobrado        : S/ %.2f\n", boleta.getTotal());
-                    System.out.println("--------------------------------");
+
                     break;
 
                 case 2:
