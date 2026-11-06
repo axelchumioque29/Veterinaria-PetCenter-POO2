@@ -31,4 +31,15 @@ public class ConsolaUtil {
         scanner.nextLine(); // Limpiar buffer
         return valor;
     }
+
+    public static boolean leerBooleano(String mensaje) {
+        System.out.print(mensaje);
+        while (!scanner.hasNextBoolean()) {
+            System.out.print("Ingrese un valor válido (true o false): ");
+            scanner.next();
+        }
+        boolean valor = scanner.nextBoolean();
+        scanner.nextLine(); // Limpiar buffer
+        return valor;
+    }
 }

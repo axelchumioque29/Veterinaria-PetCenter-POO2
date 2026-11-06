@@ -11,7 +11,11 @@ public class ControladorCliente {
         this.repositorioClientes = repoClientes;
     }
 
-    public void registrarCliente(Cliente cliente) {
+    public void registrarCliente(Cliente cliente) throws Exception {
+        // Validar si ya existe un cliente con el mismo DNI
+        if (buscarClientePorDni(cliente.getDni()) != null) {
+            throw new Exception("Error: Ya existe un cliente registrado con el DNI " + cliente.getDni());
+        }
         repositorioClientes.agregar(cliente);
     }
 
@@ -19,7 +23,6 @@ public class ControladorCliente {
         return repositorioClientes.listarTodos();
     }
 
-    // Delegando la búsqueda a la micro-clase BuscadorClienteController
     public Cliente buscarClientePorDni(String dni) {
         return BuscadorClienteController.buscarPorDni(repositorioClientes.listarTodos(), dni);
     }

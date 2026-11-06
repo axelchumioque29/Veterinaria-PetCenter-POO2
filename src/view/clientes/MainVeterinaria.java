@@ -4,13 +4,18 @@ import controller.clientes.ControladorCita;
 import controller.clientes.ControladorCliente;
 import controller.clientes.ControladorMascota;
 import controller.clientes.VeterinariaFacade;
-import model.clientes.Cita;
-import model.clientes.Cliente;
-import model.clientes.Mascota;
-import model.clientes.RepositorioGenerico;
+import model.clientes.*;
 
 public class MainVeterinaria {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
+        Recepcionista recepcionistaDeTurno = new Recepcionista("70000001", "María Gonzales", "999888777", "Mañana");
+
+        System.out.println("=========================================");
+        System.out.println("   BIENVENIDA A VETERINARIA PETCENTER    ");
+        System.out.println("   Recepcionista de turno: " + recepcionistaDeTurno.getNombre());
+        System.out.println("=========================================");
+
+
         // Inicializar repositorios genéricos
         RepositorioGenerico<Cliente> repoClientes = new RepositorioGenerico<>();
         RepositorioGenerico<Mascota> repoMascotas = new RepositorioGenerico<>();

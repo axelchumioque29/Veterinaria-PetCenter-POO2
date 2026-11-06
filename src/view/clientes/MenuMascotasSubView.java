@@ -9,7 +9,7 @@ public class MenuMascotasSubView {
         this.facade = facade;
     }
 
-    public void mostrar() {
+    public void mostrar() throws Exception {
         int opcion;
         do {
             System.out.println("\n--- GESTION DE MASCOTAS ---");

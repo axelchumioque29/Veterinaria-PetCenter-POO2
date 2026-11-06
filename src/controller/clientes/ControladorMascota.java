@@ -11,7 +11,11 @@ public class ControladorMascota {
         this.repositorioMascotas = repoMascotas;
     }
 
-    public void registrarMascota(Mascota mascota) {
+    public void registrarMascota(Mascota mascota) throws Exception {
+        // Validar si ya existe una mascota con el mismo código
+        if (buscarMascotaPorCodigo(mascota.getCodigo()) != null) {
+            throw new Exception("Error: Ya existe una mascota registrada con el código " + mascota.getCodigo());
+        }
         repositorioMascotas.agregar(mascota);
     }
 
