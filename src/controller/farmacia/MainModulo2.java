@@ -4,7 +4,6 @@ import model.clientes.*;
 import view.farmacia.MenuFarmaciaView;
 import javax.swing.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
 
 public class MainModulo2 {
     public static ClinicaFacade crearDemostracion() {
@@ -13,10 +12,10 @@ public class MainModulo2 {
 
             public String emitirSonido() { return "Guau"; }
         };
-        ArrayList<Mascota> mascotas = new ArrayList<>();
-        mascotas.add(mascota);
-        clinica.registrarCliente(new Cliente("00000000", "Cliente de demostración", "000000000",
-                "Dirección de demostración"));
+        Cliente cliente = new Cliente("00000000", "Cliente de demostración", "000000000",
+                "Dirección de demostración");
+        cliente.agregarMascota(mascota);
+        clinica.registrarCliente(cliente);
         clinica.registrarMedicamento("Medicamento", "MED001", "Producto de demostración", 15.0,
                 "Principio de demostración", 5);
         clinica.registrarLote("MED001", "LOTE001", LocalDate.now().plusMonths(6), 20);
