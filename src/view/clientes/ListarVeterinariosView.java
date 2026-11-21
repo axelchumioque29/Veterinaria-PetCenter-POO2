@@ -17,9 +17,9 @@ public class ListarVeterinariosView {
 
         // Creamos una lista fija de ejemplo para el staff
         List<Veterinario> veterinarios = Arrays.asList(
-                new Veterinario("Dr. Carlos Ruiz", "45123456", "987654321", "Cirugía General", "Mañana"),
-                new Veterinario("Dra. Ana Torres", "46234567", "912345678", "Medicina Felina",  "Tarde"),
-                new Veterinario("Dr. Jorge Mendoza", "47345678", "998877665", "Emergencias / Exóticos",  "Noche")
+                new Veterinario("45123456", "Carlos Ruiz", "987654321", "Cirugía General", "Mañana"),
+                new Veterinario("46234567", "Ana Torres", "912345678", "Medicina Felina",  "Tarde"),
+                new Veterinario("47345678", "Jorge Mendoza", "998877665", "Emergencias / Exóticos",  "Noche")
         );
 
         for (Veterinario v : veterinarios) {
