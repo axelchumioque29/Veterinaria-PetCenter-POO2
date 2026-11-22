@@ -46,14 +46,13 @@ public class MainSistemaIntegradoSwing {
                     new ControladorMascota(repoMascotas),
                     new ControladorCita(repoCitas)
             );
-            Recepcionista recepcionistaTurno = new Recepcionista("74125896", "Valeria Rojas", "987654321", "REC-01");
 
             // 2. Inicializar Módulo 2 (Clínico y Farmacia - Fabricio)
             ClinicaFacade facadeFabricio = MainModulo2.crearDemostracion();
 
-            // 3. Inicializar Módulo 3 (Caja - Billy)
-            String idCajero = JOptionPane.showInputDialog(null, "Ingrese ID del Cajero:", "Configuracion Inicial de Caja", JOptionPane.QUESTION_MESSAGE);
-            String nombreCajero = JOptionPane.showInputDialog(null, "Ingrese Nombre del Cajero:", "Configuracion Inicial de Caja", JOptionPane.QUESTION_MESSAGE);
+            // 3. Inicializar Módulo 3 (Caja - Billy) -> Define al operador de turno para todo el sistema
+            String idOperador = JOptionPane.showInputDialog(null, "Ingrese ID / DNI del Operador de Turno:", "Inicio de Turno", JOptionPane.QUESTION_MESSAGE);
+            String nombreOperador = JOptionPane.showInputDialog(null, "Ingrese Nombre del Operador de Turno:", "Inicio de Turno", JOptionPane.QUESTION_MESSAGE);
             String saldoStr = JOptionPane.showInputDialog(null, "Ingrese saldo inicial en caja (S/):", "100.0");
 
             double saldoInicial = 100.0;
@@ -64,9 +63,10 @@ public class MainSistemaIntegradoSwing {
             } catch (NumberFormatException ignored) {}
 
             final Cajero[] cajeroActual = { new Cajero(
-                    (idCajero != null && !idCajero.trim().isEmpty()) ? idCajero.trim() : "C01",
-                    (nombreCajero != null && !nombreCajero.trim().isEmpty()) ? nombreCajero.trim() : "Cajero"
+                    (idOperador != null && !idOperador.trim().isEmpty()) ? idOperador.trim() : "C01",
+                    (nombreOperador != null && !nombreOperador.trim().isEmpty()) ? nombreOperador.trim() : "Operador"
             )};
+
             ControladorCaja controladorCaja = new ControladorCaja();
             controladorCaja.iniciarTurno(cajeroActual[0], saldoInicial);
             AuditoriaFinanciera.registrarAccion(cajeroActual[0].getId(), "Apertura de caja inicial con S/ " + saldoInicial);
@@ -82,14 +82,20 @@ public class MainSistemaIntegradoSwing {
             JLabel lblTitulo = new JLabel("SISTEMA VETERINARIO INTEGRADO", SwingConstants.CENTER);
             lblTitulo.setFont(new Font("Arial", Font.BOLD, 16));
 
-            JButton btnRecepcion = new JButton("1. Modulo de Recepcion (Clientes y Citas)");
-            JButton btnFarmacia = new JButton("2. Modulo Clinico y Farmacia (Inventario y Recetas)");
-            JButton btnCaja = new JButton("3. Modulo de Facturacion (Caja y Cobros)");
+            JButton btnRecepcion = new JButton("1. Módulo de Recepción (Clientes y Citas)");
+            JButton btnFarmacia = new JButton("2. Módulo Clínico y Farmacia (Inventario y Recetas)");
+            JButton btnCaja = new JButton("3. Módulo de Facturación (Caja y Cobros)");
 
-            // Navegación Módulo 1
+            // Navegación Módulo 1 (Usa el mismo operador de turno que Caja)
             btnRecepcion.addActionListener(e -> {
                 ventanaPrincipal.setVisible(false);
-                VentanaRecepcionSwing ventanaAxel = new VentanaRecepcionSwing(facadeAxel, recepcionistaTurno);
+                Recepcionista recepcionistaActual = new Recepcionista(
+                        cajeroActual[0].getId(),
+                        cajeroActual[0].getNombre(),
+                        "987654321",
+                        "REC-" + cajeroActual[0].getId()
+                );
+                VentanaRecepcionSwing ventanaAxel = new VentanaRecepcionSwing(facadeAxel, recepcionistaActual);
                 ventanaAxel.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 ventanaAxel.addWindowListener(new WindowAdapter() {
                     @Override
@@ -116,7 +122,7 @@ public class MainSistemaIntegradoSwing {
                 ventanaFabricio.setVisible(true);
             });
 
-            // Navegación Módulo 3
+            // Navegación Módulo 3 (Actualiza al operador global si hubo cambio de turno)
             btnCaja.addActionListener(e -> {
                 ventanaPrincipal.setVisible(false);
                 VentanaCajaSwing ventanaBilly = new VentanaCajaSwing(controladorCaja, cajeroActual[0], repoClientes);
