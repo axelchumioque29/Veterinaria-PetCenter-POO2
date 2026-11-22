@@ -14,7 +14,6 @@ import model.clientes.RepositorioGenerico;
 // Módulo 2 (Clínico y Farmacia)
 import controller.farmacia.ClinicaFacade;
 import controller.farmacia.ControladorFarmacia;
-import controller.farmacia.MainModulo2;
 import view.farmacia.MenuFarmaciaView;
 
 // Módulo 3 (Caja y Facturación)
@@ -48,7 +47,7 @@ public class MainSistemaIntegradoSwing {
             );
 
             // 2. Inicializar Módulo 2 (Clínico y Farmacia - Fabricio)
-            ClinicaFacade facadeFabricio = MainModulo2.crearDemostracion();
+            ClinicaFacade facadeFabricio = new ClinicaFacade(facadeAxel);
 
             // 3. Inicializar Módulo 3 (Caja - Billy) -> Define al operador de turno para todo el sistema
             String idOperador = JOptionPane.showInputDialog(null, "Ingrese ID / DNI del Operador de Turno:", "Inicio de Turno", JOptionPane.QUESTION_MESSAGE);
@@ -73,18 +72,21 @@ public class MainSistemaIntegradoSwing {
 
             // 4. Ventana Principal del Sistema Integrado
             JFrame ventanaPrincipal = new JFrame("PetCenter - Sistema Veterinario Integrado");
-            ventanaPrincipal.setSize(460, 320);
+            ventanaPrincipal.setSize(580, 360);
             ventanaPrincipal.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             ventanaPrincipal.setLocationRelativeTo(null);
-            ventanaPrincipal.setLayout(new GridLayout(4, 1, 12, 12));
+            ventanaPrincipal.setLayout(new GridLayout(5, 1, 12, 12));
             ((JPanel) ventanaPrincipal.getContentPane()).setBorder(BorderFactory.createEmptyBorder(20, 30, 20, 30));
 
-            JLabel lblTitulo = new JLabel("SISTEMA VETERINARIO INTEGRADO", SwingConstants.CENTER);
+            JLabel lblTitulo = new JLabel("SISTEMA VETERINARIO PET CENTER", SwingConstants.CENTER);
             lblTitulo.setFont(new Font("Arial", Font.BOLD, 16));
 
-            JButton btnRecepcion = new JButton("1. Módulo de Recepción (Clientes y Citas)");
-            JButton btnFarmacia = new JButton("2. Módulo Clínico y Farmacia (Inventario y Recetas)");
-            JButton btnCaja = new JButton("3. Módulo de Facturación (Caja y Cobros)");
+            JButton btnRecepcion = new JButton("1. Módulo 1: Clientes, Mascotas y Citas");
+            JButton btnFarmacia = new JButton("2. Módulo 2: Farmacia, Inventarios y Atención Médica");
+            JButton btnCaja = new JButton("3. Módulo 3: Facturación, Caja y Reportes");
+            JButton btnSalir = new JButton("4. Salir");
+            btnSalir.addActionListener(e -> ventanaPrincipal.dispatchEvent(
+                    new WindowEvent(ventanaPrincipal, WindowEvent.WINDOW_CLOSING)));
 
             // Navegación Módulo 1 (Usa el mismo operador de turno que Caja)
             btnRecepcion.addActionListener(e -> {
@@ -141,6 +143,7 @@ public class MainSistemaIntegradoSwing {
             ventanaPrincipal.add(btnRecepcion);
             ventanaPrincipal.add(btnFarmacia);
             ventanaPrincipal.add(btnCaja);
+            ventanaPrincipal.add(btnSalir);
             ventanaPrincipal.setVisible(true);
         });
     }

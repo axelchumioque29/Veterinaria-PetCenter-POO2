@@ -14,12 +14,14 @@ public class FormularioRecetaView extends JPanel {
         JTextField cantidad = NotificacionFarmaciaView.agregarCampo(formulario, "Unidades a dispensar");
         JTextField indicaciones = NotificacionFarmaciaView.agregarCampo(formulario, "Indicaciones del veterinario");
         JTextField veterinario = NotificacionFarmaciaView.agregarCampo(formulario, "Veterinario");
+        JTextField cita = NotificacionFarmaciaView.agregarCampo(formulario, "ID de cita (opcional)");
         formulario.add(NotificacionFarmaciaView.crearBoton("Registrar y dispensar", () -> {
             controlador.registrarReceta(codigo.getText().trim(), mascota.getText().trim(), medicamento.getText().trim(),
-                    cantidad.getText().trim(), indicaciones.getText(), veterinario.getText());
+                    cantidad.getText().trim(), indicaciones.getText(), veterinario.getText(), cita.getText().trim());
             NotificacionFarmaciaView.mostrarExito(this, "Receta registrada en la historia. Stock descontado.");
         }));
         add(formulario, BorderLayout.NORTH);
+        add(NotificacionFarmaciaView.crearSelectorMascota(controlador.getClinica(), mascota), BorderLayout.SOUTH);
     }
 }
 

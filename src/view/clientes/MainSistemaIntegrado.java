@@ -13,7 +13,6 @@ import model.clientes.RepositorioGenerico;
 // Importaciones del Módulo 2
 import controller.farmacia.ClinicaFacade;
 import controller.farmacia.CoordinadorFarmacia;
-import controller.farmacia.MainModulo2;
 
 // Importaciones del Módulo 3
 import controller.caja.ControladorCaja;
@@ -41,7 +40,7 @@ public class MainSistemaIntegrado {
         VeterinariaFacade facadeAxel = new VeterinariaFacade(ctrlCliente, ctrlMascota, ctrlCita);
 
         //modulo clinico
-        ClinicaFacade facadeFabricio = MainModulo2.crearDemostracion();
+        ClinicaFacade facadeFabricio = new ClinicaFacade(facadeAxel);
 
         // modulo caja
         System.out.println("=== CONFIGURACIÓN INICIAL DE CAJA ===");

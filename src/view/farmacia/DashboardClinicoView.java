@@ -19,6 +19,8 @@ public class DashboardClinicoView extends JPanel {
         resumen.setText("PetCenter - Módulo 2 - Fabricio Agurto\n"
                 + "Medicamentos: " + clinica.listarMedicamentos().size()
                 + "\nMascotas: " + clinica.getAtencion().listarMascotas().size()
+                + "\nCitas registradas: " + clinica.listarCitas().size()
+                + "\nCitas pendientes: " + clinica.obtenerCitasPendientes().size()
                 + "\nRecetas: " + clinica.getAtencion().contarRecetas()
                 + "\nInternamientos activos: " + clinica.getAtencion().contarInternados()
                 + "\n\nAUDITORÍA DE LA SESIÓN\n");

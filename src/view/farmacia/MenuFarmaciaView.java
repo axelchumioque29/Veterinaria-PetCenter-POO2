@@ -20,11 +20,12 @@ public class MenuFarmaciaView extends JFrame {
         PanelInventarioView inventario = new PanelInventarioView(controlador);
         DashboardClinicoView resumen = new DashboardClinicoView(clinica);
         AlertaVencimientoView alertas = new AlertaVencimientoView(clinica);
+        PanelMedicoView atencion = new PanelMedicoView(clinica);
         pestanas.addTab("Resumen", resumen);
         pestanas.addTab("Inventario", inventario);
         pestanas.addTab("Stock y lotes", new ControlStockView(controlador));
         pestanas.addTab("Detalle", new DetalleMedicamentoView(clinica));
-        pestanas.addTab("Atención", new PanelMedicoView(clinica));
+        pestanas.addTab("Atención", atencion);
         pestanas.addTab("Recetas", new FormularioRecetaView(controlador));
         pestanas.addTab("Historias", new VistaHistoriaClinicaView(clinica));
         pestanas.addTab("Internamientos", new FormularioInternamientoView(clinica));
@@ -33,6 +34,7 @@ public class MenuFarmaciaView extends JFrame {
         pestanas.addChangeListener(evento -> {
             inventario.actualizar();
             resumen.actualizar();
+            if (pestanas.getSelectedComponent() == atencion) atencion.actualizar();
         });
 
         // Botón inferior para volver al menú principal

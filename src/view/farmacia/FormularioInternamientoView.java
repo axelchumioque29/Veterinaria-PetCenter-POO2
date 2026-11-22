@@ -10,8 +10,9 @@ public class FormularioInternamientoView extends JPanel {
         JPanel formulario = new JPanel(new GridLayout(0, 2, 5, 5));
         JTextField mascota = NotificacionFarmaciaView.agregarCampo(formulario, "ID de mascota");
         JTextField motivo = NotificacionFarmaciaView.agregarCampo(formulario, "Motivo de internamiento");
+        JTextField cita = NotificacionFarmaciaView.agregarCampo(formulario, "ID de cita (opcional)");
         formulario.add(NotificacionFarmaciaView.crearBoton("Registrar internamiento", () -> {
-            clinica.registrarInternamiento(mascota.getText().trim(), motivo.getText());
+            clinica.registrarInternamiento(mascota.getText().trim(), motivo.getText(), cita.getText().trim());
             NotificacionFarmaciaView.mostrarExito(this, "Internamiento registrado.");
         }));
         formulario.add(NotificacionFarmaciaView.crearBoton("Dar de alta", () -> {
@@ -19,6 +20,7 @@ public class FormularioInternamientoView extends JPanel {
             NotificacionFarmaciaView.mostrarExito(this, "Alta registrada.");
         }));
         add(formulario, BorderLayout.NORTH);
+        add(NotificacionFarmaciaView.crearSelectorMascota(clinica, mascota), BorderLayout.SOUTH);
     }
 }
 

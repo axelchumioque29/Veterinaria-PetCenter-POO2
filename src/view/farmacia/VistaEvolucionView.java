@@ -12,10 +12,12 @@ public class VistaEvolucionView extends JPanel {
         JTextField mascota = NotificacionFarmaciaView.agregarCampo(formulario, "ID de mascota");
         JTextField observacion = NotificacionFarmaciaView.agregarCampo(formulario, "Observación");
         JTextField veterinario = NotificacionFarmaciaView.agregarCampo(formulario, "Veterinario");
+        JTextField cita = NotificacionFarmaciaView.agregarCampo(formulario, "ID de cita (opcional)");
         JTextArea listado = new JTextArea();
         listado.setEditable(false);
         formulario.add(NotificacionFarmaciaView.crearBoton("Registrar evolución", () -> {
-            clinica.getAtencion().registrarEvolucion(mascota.getText().trim(), observacion.getText(), veterinario.getText());
+            clinica.getAtencion().registrarEvolucion(mascota.getText().trim(), observacion.getText(),
+                    veterinario.getText(), cita.getText().trim());
             NotificacionFarmaciaView.mostrarExito(this, "Evolución registrada.");
         }));
         formulario.add(NotificacionFarmaciaView.crearBoton("Consultar evoluciones", () -> {
@@ -26,6 +28,7 @@ public class VistaEvolucionView extends JPanel {
         }));
         add(formulario, BorderLayout.NORTH);
         add(new JScrollPane(listado), BorderLayout.CENTER);
+        add(NotificacionFarmaciaView.crearSelectorMascota(clinica, mascota), BorderLayout.SOUTH);
     }
 }
 

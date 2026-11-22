@@ -9,11 +9,15 @@ public class PlanificadorInternamiento {
     public PlanificadorInternamiento(AdministradorHistoriales historiales) { this.historiales = historiales; }
 
     public synchronized Internamiento registrar(Mascota mascota, String motivo) {
+        return registrar(mascota, motivo, null);
+    }
+
+    public synchronized Internamiento registrar(Mascota mascota, String motivo, String idCita) {
         HistoriaClinica historia = historiales.obtener(mascota);
         for (Internamiento existente : historia.getInternamientos()) {
             if (existente.estaActivo()) throw new IllegalArgumentException("La mascota ya está internada.");
         }
-        Internamiento internamiento = new Internamiento(historia.getMascota(), motivo);
+        Internamiento internamiento = new Internamiento(historia.getMascota(), motivo, idCita);
         historia.agregarInternamiento(internamiento);
         return internamiento;
     }

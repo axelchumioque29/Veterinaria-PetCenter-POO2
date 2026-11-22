@@ -6,6 +6,7 @@ import java.util.Objects;
 
 public class HistoriaClinica {
     private final Mascota mascota;
+    private final ArrayList<AtencionMedica> atenciones = new ArrayList<>();
     private final ArrayList<RecetaMedica> recetas = new ArrayList<>();
     private final ArrayList<EvolucionClinica> evoluciones = new ArrayList<>();
     private final ArrayList<Internamiento> internamientos = new ArrayList<>();
@@ -14,6 +15,20 @@ public class HistoriaClinica {
         this.mascota = Objects.requireNonNull(mascota, "Seleccione una mascota.");
     }
     public Mascota getMascota() { return mascota; }
+    public synchronized ArrayList<AtencionMedica> getAtenciones() { return new ArrayList<>(atenciones); }
+    public synchronized void agregarAtencion(AtencionMedica atencion) {
+        if (atencion == null || atencion.getMascota() != mascota) {
+            throw new IllegalArgumentException("La atención pertenece a otra mascota.");
+        }
+        for (AtencionMedica existente : atenciones) {
+            if (existente.getIdCita().equals(atencion.getIdCita())) {
+                throw new IllegalArgumentException("La cita ya tiene una atención registrada.");
+            }
+        }
+        atenciones.add(atencion);
+    }
+    // Compensa el registro si no se pudo actualizar el estado en el Módulo 1.
+    public synchronized void retirarAtencion(AtencionMedica atencion) { atenciones.remove(atencion); }
     public synchronized ArrayList<RecetaMedica> getRecetas() { return new ArrayList<>(recetas); }
     public synchronized ArrayList<EvolucionClinica> getEvoluciones() { return new ArrayList<>(evoluciones); }
     public synchronized ArrayList<Internamiento> getInternamientos() { return new ArrayList<>(internamientos); }

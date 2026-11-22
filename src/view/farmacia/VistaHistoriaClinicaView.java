@@ -14,7 +14,10 @@ public class VistaHistoriaClinicaView extends JPanel {
         detalle.setEditable(false);
         formulario.add(NotificacionFarmaciaView.crearBoton("Consultar historia", () -> {
             HistoriaClinica historia = clinica.consultarHistoria(mascota.getText().trim());
-            StringBuilder texto = new StringBuilder("Mascota: " + historia.getMascota().getNombre() + "\n\nRECETAS\n");
+            StringBuilder texto = new StringBuilder("Mascota: " + historia.getMascota().getIdMascota()
+                    + " | " + historia.getMascota().getNombre() + "\n\nATENCIONES MÉDICAS\n");
+            for (AtencionMedica atencion : historia.getAtenciones()) texto.append(atencion).append("\n");
+            texto.append("\nRECETAS\n");
             for (RecetaMedica receta : historia.getRecetas()) texto.append(receta).append("\n");
             texto.append("\nEVOLUCIONES\n");
             for (EvolucionClinica evolucion : historia.getEvoluciones()) texto.append(evolucion).append("\n");
@@ -24,6 +27,7 @@ public class VistaHistoriaClinicaView extends JPanel {
         }));
         add(formulario, BorderLayout.NORTH);
         add(new JScrollPane(detalle), BorderLayout.CENTER);
+        add(NotificacionFarmaciaView.crearSelectorMascota(clinica, mascota), BorderLayout.SOUTH);
     }
 }
 

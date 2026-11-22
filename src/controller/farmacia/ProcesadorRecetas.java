@@ -19,13 +19,19 @@ public class ProcesadorRecetas {
     public synchronized RecetaMedica procesar(String codigo, Mascota mascota, String codigoMedicamento,
                                               int cantidad, String indicaciones, String veterinario)
             throws StockInsuficienteException, MedicamentoVencidoException {
+        return procesar(codigo, mascota, codigoMedicamento, cantidad, indicaciones, veterinario, null);
+    }
+
+    public synchronized RecetaMedica procesar(String codigo, Mascota mascota, String codigoMedicamento,
+                                              int cantidad, String indicaciones, String veterinario, String idCita)
+            throws StockInsuficienteException, MedicamentoVencidoException {
         codigo = ProductoFarmacia.validarTexto(codigo);
         for (RecetaMedica receta : recetas) {
             if (receta.getCodigo().equals(codigo)) throw new IllegalArgumentException("La receta ya existe.");
         }
         HistoriaClinica historia = historiales.obtener(mascota);
         RecetaMedica receta = new RecetaMedica(codigo, historia.getMascota(), inventario.buscar(codigoMedicamento),
-                cantidad, indicaciones, veterinario);
+                cantidad, indicaciones, veterinario, idCita);
         inventario.descontarStock(codigoMedicamento, cantidad);
         sincronizador.registrarReceta(receta);
         recetas.add(receta);

@@ -6,6 +6,7 @@ import java.util.Objects;
 
 public class RecetaMedica {
     private final String codigo;
+    private final String idCita;
     private final Mascota mascota;
     private final Medicamento medicamento;
     private final int cantidad;
@@ -15,6 +16,12 @@ public class RecetaMedica {
 
     public RecetaMedica(String codigo, Mascota mascota, Medicamento medicamento,
                         int cantidad, String indicaciones, String veterinario) {
+        this(codigo, mascota, medicamento, cantidad, indicaciones, veterinario, null);
+    }
+
+    public RecetaMedica(String codigo, Mascota mascota, Medicamento medicamento,
+                        int cantidad, String indicaciones, String veterinario, String idCita) {
+        this.idCita = idCita == null ? null : ProductoFarmacia.validarTexto(idCita);
         this.codigo = ProductoFarmacia.validarTexto(codigo);
         this.mascota = Objects.requireNonNull(mascota, "Seleccione una mascota.");
         this.medicamento = Objects.requireNonNull(medicamento, "Seleccione un medicamento.");
@@ -25,6 +32,7 @@ public class RecetaMedica {
     }
 
     public String getCodigo() { return codigo; }
+    public String getIdCita() { return idCita; }
     public Mascota getMascota() { return mascota; }
     public Medicamento getMedicamento() { return medicamento; }
     public int getCantidad() { return cantidad; }
@@ -34,7 +42,7 @@ public class RecetaMedica {
     @Override
     public String toString() {
         return codigo + " | " + fecha + " | " + medicamento.getNombre() + " x " + cantidad
-                + " | " + indicaciones + " | " + veterinario;
+                + " | " + indicaciones + " | " + veterinario + (idCita == null ? "" : " | Cita: " + idCita);
     }
 }
 

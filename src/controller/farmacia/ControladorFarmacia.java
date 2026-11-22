@@ -7,6 +7,10 @@ public class ControladorFarmacia {
     private final ClinicaFacade clinica;
     public ControladorFarmacia(ClinicaFacade clinica) { this.clinica = clinica; }
     public ClinicaFacade getClinica() { return clinica; }
+    public void registrarAtencion(String idCita, String mascota, String motivo, String diagnostico,
+                                   String tratamiento, String veterinario) {
+        clinica.registrarAtencion(idCita, mascota, motivo, diagnostico, tratamiento, veterinario);
+    }
 
     public void registrar(String tipo, String codigo, String nombre, String precio, String principio, String minimo) {
         clinica.registrarMedicamento(tipo, codigo, nombre, Double.parseDouble(precio), principio, Integer.parseInt(minimo));
@@ -30,8 +34,12 @@ public class ControladorFarmacia {
     }
     public void registrarReceta(String codigo, String mascota, String medicamento, String cantidad,
                                 String indicaciones, String veterinario) {
+        registrarReceta(codigo, mascota, medicamento, cantidad, indicaciones, veterinario, null);
+    }
+    public void registrarReceta(String codigo, String mascota, String medicamento, String cantidad,
+                                String indicaciones, String veterinario, String idCita) {
         try {
-            clinica.registrarReceta(codigo, mascota, medicamento, Integer.parseInt(cantidad), indicaciones, veterinario);
+            clinica.registrarReceta(codigo, mascota, medicamento, Integer.parseInt(cantidad), indicaciones, veterinario, idCita);
         } catch (StockInsuficienteException | MedicamentoVencidoException excepcion) {
             throw new IllegalArgumentException(excepcion.getMessage(), excepcion);
         }

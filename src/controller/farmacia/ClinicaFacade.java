@@ -1,6 +1,8 @@
 package controller.farmacia;
 
 import model.clientes.Cliente;
+import model.clientes.Cita;
+import controller.clientes.VeterinariaFacade;
 import model.farmacia.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -8,9 +10,22 @@ import java.util.ArrayList;
 public class ClinicaFacade {
     private final AuditoriaClinica auditoria = new AuditoriaClinica();
     private final ControladorInventario inventario = new ControladorInventario(auditoria);
-    private final ControladorAtencion atencion = new ControladorAtencion(inventario, auditoria);
+    private final ControladorAtencion atencion;
     private final GestorAlertas alertas = new GestorAlertas();
     private final ControladorConcurrente concurrencia = new ControladorConcurrente(inventario, alertas);
+
+    public ClinicaFacade() { this(null); }
+
+    public ClinicaFacade(VeterinariaFacade veterinaria) {
+        atencion = new ControladorAtencion(inventario, auditoria, veterinaria);
+    }
+
+    public ArrayList<Cita> listarCitas() { return atencion.listarCitas(); }
+    public ArrayList<Cita> obtenerCitasPendientes() { return atencion.obtenerCitasPendientes(); }
+    public AtencionMedica registrarAtencion(String idCita, String mascota, String motivo,
+                                           String diagnostico, String tratamiento, String veterinario) {
+        return atencion.registrarAtencion(idCita, mascota, motivo, diagnostico, tratamiento, veterinario);
+    }
 
     public ControladorInventario getInventario() { return inventario; }
     public ControladorAtencion getAtencion() { return atencion; }
@@ -32,6 +47,14 @@ public class ClinicaFacade {
         return atencion.registrarReceta(codigo, mascota, medicamento, cantidad, indicaciones, veterinario);
     }
     public HistoriaClinica consultarHistoria(String mascota) { return atencion.consultarHistoria(mascota); }
+    public RecetaMedica registrarReceta(String codigo, String mascota, String medicamento, int cantidad,
+                                        String indicaciones, String veterinario, String idCita)
+            throws StockInsuficienteException, MedicamentoVencidoException {
+        return atencion.registrarReceta(codigo, mascota, medicamento, cantidad, indicaciones, veterinario, idCita);
+    }
+    public Internamiento registrarInternamiento(String mascota, String motivo, String idCita) {
+        return atencion.internar(mascota, motivo, idCita);
+    }
     public Internamiento registrarInternamiento(String mascota, String motivo) { return atencion.internar(mascota, motivo); }
     public void iniciarMonitoreo() { concurrencia.iniciar(); }
     public void detenerMonitoreo() { concurrencia.detener(); }
