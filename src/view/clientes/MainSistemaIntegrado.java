@@ -22,6 +22,7 @@ import model.caja.Cajero;
 import view.caja.MenuCajaView;
 import model.caja.AuditoriaFinanciera;
 import model.caja.EstadoCaja;
+import view.clientes.consola.MenuPrincipalView;
 
 import java.util.Scanner;
 
@@ -71,7 +72,7 @@ public class MainSistemaIntegrado {
             scanner.nextLine();
 
             if (opcionPrincipal == 1) {
-                view.clientes.MenuPrincipalView menuAxel = new view.clientes.MenuPrincipalView(facadeAxel);
+                MenuPrincipalView menuAxel = new MenuPrincipalView(facadeAxel);
                 menuAxel.mostrar();
             } else if (opcionPrincipal == 2) {
                 new CoordinadorFarmacia(facadeFabricio).iniciar();

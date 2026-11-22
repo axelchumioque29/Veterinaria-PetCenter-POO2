@@ -1,4 +1,4 @@
-package view.clientes;
+package view.clientes.consola;
 
 import java.util.Scanner;
 

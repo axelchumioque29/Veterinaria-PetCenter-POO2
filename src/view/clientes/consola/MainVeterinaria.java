@@ -1,4 +1,4 @@
-package view.clientes;
+package view.clientes.consola;
 
 import controller.clientes.ControladorCita;
 import controller.clientes.ControladorCliente;

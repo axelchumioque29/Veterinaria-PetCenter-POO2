@@ -1,7 +1,8 @@
-package view.clientes;
+package view.clientes.consola;
 
 import controller.clientes.VeterinariaFacade;
 import model.clientes.*;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
