@@ -32,7 +32,7 @@ public class AgendarCitaView {
             IEstrategiaAtencion estrategia = (tipo == 2) ? new AtencionEmergencia() : new AtencionGeneral();
 
             facade.agendarCita(idCita, dniCliente, codigoMascota, fechaHora, estrategia);
-            System.out.println("¡Cita agendada con exito! Prioridad: " + estrategia.obtenerPrioridad());
+            System.out.println("¡Cita agendada con exito! Prioridad: " + estrategia.obtenerPrioridad()+" | Estado: PENDIENTE");
 
         } catch (DateTimeParseException e) {
             System.out.println("Error: Formato de fecha y hora incorrecto.");

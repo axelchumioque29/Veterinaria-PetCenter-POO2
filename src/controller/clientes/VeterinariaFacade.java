@@ -56,4 +56,12 @@ public class VeterinariaFacade {
     public List<Cita> obtenerCitasPendientes() {
         return filtroCitasStream.obtenerCitasPendientes(controladorCita.listarCitas());
     }
+
+    public boolean marcarCitaComoAtendida(String idCita) {
+        return controladorCita.marcarComoAtendida(idCita);
+    }
+
+    public List<Cita> listarTodasLasCitas() {
+        return controladorCita.listarCitas();
+    }
 }

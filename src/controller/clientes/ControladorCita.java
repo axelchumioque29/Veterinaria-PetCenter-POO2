@@ -3,6 +3,7 @@ import controller.clientes.FiltroEstadoCitaController;
 import controller.clientes.ProcesadorCitaController;
 import model.clientes.Cita;
 import model.clientes.CitaCruzadaException;
+import model.clientes.EstadoCita;
 import model.clientes.RepositorioGenerico;
 import java.util.List;
 
@@ -36,5 +37,16 @@ public class ControladorCita {
     // Método para listar todas las citas
     public List<Cita> listarCitas() {
         return repositorioCitas.listarTodos();
+    }
+
+    // Marcar cita como atendida por su ID
+    public boolean marcarComoAtendida(String idCita) {
+        for (Cita c : repositorioCitas.listarTodos()) {
+            if (c.getIdCita().equals(idCita)) {
+                c.setEstado(EstadoCita.ATENDIDA);
+                return true;
+            }
+        }
+        return false;
     }
 }
