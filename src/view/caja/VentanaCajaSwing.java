@@ -22,7 +22,7 @@ public class VentanaCajaSwing extends JFrame {
     public VentanaCajaSwing(ControladorCaja controlador, Cajero cajeroInicial, RepositorioGenerico<Cliente> repoClientes) {
         this.cajeroTurno = cajeroInicial;
 
-        setTitle("Modulo de Facturación y Caja - Cajero: " + cajeroTurno.getNombre());
+        setTitle("Módulo de Facturación y Caja - Cajero: " + cajeroTurno.getNombre());
         setSize(820, 460);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -49,12 +49,12 @@ public class VentanaCajaSwing extends JFrame {
         // 1. Evento Cobrar
         formCobro.btnCobrar.addActionListener(e -> {
             if (controlador.getCajaActual().getEstado() == EstadoCaja.CERRADA) {
-                alerta.mostrarErrorCritico("La caja está CERRADA. Use 'Abrir Nuevo Turno' para ingresar un nuevo cajero.");
+                alerta.mostrarErrorCritico("La caja está cerrada. Use 'Abrir Nuevo Turno' para ingresar un nuevo cajero.");
                 return;
             }
             Cliente cli = repoClientes.buscar(c -> c.getDni().equals(formCobro.txtDni.getText().trim()));
             if (cli == null) {
-                alerta.mostrarAdvertencia("Cliente no encontrado. Regístrelo primero en Recepción.");
+                alerta.mostrarAdvertencia("Cliente no encontrado. Registrelo primero en recepcion.");
                 return;
             }
             try {
@@ -69,7 +69,7 @@ public class VentanaCajaSwing extends JFrame {
                 areaSalida.setText(vistaBoleta.generarTextoBoleta("B001", "000001", cli.getNombre(),
                         formCobro.txtConcepto.getText(), pago, boleta.getSubtotalBase(), boleta.getMontoIGV(), boleta.getTotal()));
             } catch (NumberFormatException ex) {
-                alerta.mostrarErrorCritico("Ingrese un monto numérico válido.");
+                alerta.mostrarErrorCritico("Ingrese un monto numerico valido.");
             }
         });
 
@@ -90,7 +90,7 @@ public class VentanaCajaSwing extends JFrame {
             alerta.mostrarExito("Caja cerrada correctamente. Ya puede abrir un nuevo turno con otro cajero.");
         });
 
-        // 4. Evento Abrir Nuevo Turno (Nuevo Cajero)
+        // 4. Evento Abrir Nuevo Turno (Cambio de cajero)
         btnNuevoTurno.addActionListener(e -> {
             String nuevoId = JOptionPane.showInputDialog(this, "Ingrese ID del Nuevo Cajero:");
             if (nuevoId == null || nuevoId.trim().isEmpty()) return;
@@ -105,7 +105,7 @@ public class VentanaCajaSwing extends JFrame {
                 controlador.iniciarTurno(cajeroTurno, nuevoSaldo);
                 AuditoriaFinanciera.registrarAccion(cajeroTurno.getId(), "Apertura de nuevo turno con S/ " + nuevoSaldo);
 
-                setTitle("Módulo de Facturación y Caja - Cajero: " + cajeroTurno.getNombre());
+                setTitle("Modulo de Facturacion y Caja - Cajero: " + cajeroTurno.getNombre());
                 areaSalida.setText("Nuevo turno iniciado.\nCajero: " + cajeroTurno.getNombre() + "\nSaldo inicial: S/ " + nuevoSaldo);
                 alerta.mostrarExito("Turno abierto para " + cajeroTurno.getNombre());
             } catch (Exception ex) {
@@ -115,5 +115,9 @@ public class VentanaCajaSwing extends JFrame {
 
         // 5. Evento Volver al Menú Principal
         btnVolver.addActionListener(e -> dispose());
+    }
+
+    public Cajero getCajeroTurno() {
+        return cajeroTurno;
     }
 }

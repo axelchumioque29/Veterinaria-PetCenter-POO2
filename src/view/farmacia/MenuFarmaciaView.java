@@ -2,6 +2,7 @@ package view.farmacia;
 
 import controller.farmacia.*;
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.*;
 
 public class MenuFarmaciaView extends JFrame {
@@ -13,6 +14,8 @@ public class MenuFarmaciaView extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(1000, 650);
         setLocationRelativeTo(null);
+        setLayout(new BorderLayout());
+
         JTabbedPane pestanas = new JTabbedPane();
         PanelInventarioView inventario = new PanelInventarioView(controlador);
         DashboardClinicoView resumen = new DashboardClinicoView(clinica);
@@ -31,7 +34,16 @@ public class MenuFarmaciaView extends JFrame {
             inventario.actualizar();
             resumen.actualizar();
         });
-        add(pestanas);
+
+        // Botón inferior para volver al menú principal
+        JPanel panelInferior = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 8));
+        JButton btnVolver = new JButton("Volver al Menú Principal");
+        btnVolver.addActionListener(e -> dispose());
+        panelInferior.add(btnVolver);
+
+        add(pestanas, BorderLayout.CENTER);
+        add(panelInferior, BorderLayout.SOUTH);
+
         temporizador = new Timer(1000, evento -> alertas.actualizar());
         temporizador.start();
         addWindowListener(new WindowAdapter() {
@@ -43,4 +55,3 @@ public class MenuFarmaciaView extends JFrame {
         });
     }
 }
-

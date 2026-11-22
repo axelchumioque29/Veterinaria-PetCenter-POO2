@@ -3,6 +3,7 @@ package view.clientes;
 import controller.clientes.VeterinariaFacade;
 import model.clientes.Recepcionista;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
@@ -38,7 +39,7 @@ public class VentanaRecepcionSwing extends JFrame {
         setTitle("Sistema de Gestión Veterinaria - Recepción");
         setSize(1080, 700);
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout(8, 8));
 
         add(panelCabecera, BorderLayout.NORTH);
@@ -54,8 +55,16 @@ public class VentanaRecepcionSwing extends JFrame {
         panelCentro.add(panelResumen, BorderLayout.NORTH);
         panelCentro.add(tabbedPane, BorderLayout.CENTER);
 
+        // Barra inferior con el estado y el botón de regreso
+        JButton btnVolver = new JButton("Volver al Menú Principal");
+        btnVolver.addActionListener(e -> dispose());
+
+        JPanel panelInferior = new JPanel(new BorderLayout(8, 0));
+        panelInferior.add(panelEstado, BorderLayout.CENTER);
+        panelInferior.add(btnVolver, BorderLayout.EAST);
+
         add(panelCentro, BorderLayout.CENTER);
-        add(panelEstado, BorderLayout.SOUTH);
+        add(panelInferior, BorderLayout.SOUTH);
     }
 
     public void actualizarRecepcionista(Recepcionista recepcionista) {
